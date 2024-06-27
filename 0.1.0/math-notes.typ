@@ -247,7 +247,7 @@
    
   // set font for math text
   // #show math.equation: set text(font: "STIX Two Math", weight: 400)
-  show math.equation: set text(font: "New Computer Modern Math", weight: 450, fallback: false)
+  show math.equation: set text(font: "New Computer Modern Math", weight: 450, features: ("cv01",), fallback: false)
   show math.equation: set block(below: 8pt, above: 9pt)
   //#show raw: set text(font: "New Computer Modern Mono")
    
