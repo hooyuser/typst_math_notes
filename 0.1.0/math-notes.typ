@@ -139,6 +139,7 @@
   front_color: front_color,
   background_color: background_color,
   base_level: 2,
+  supplement: head
 )
 
 // Theorem environment for example
@@ -269,6 +270,9 @@
    
   // setting for theorem environment
   show: thmrules.with(qed-symbol: $square$)
+
+  // setting reference style
+  show ref: set text(rgb("#395094"))
    
   doc
 }
