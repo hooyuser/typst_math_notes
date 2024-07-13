@@ -1,6 +1,8 @@
 
 #import "@preview/ctheorems:1.1.2": *
 
+#import "commutative-diagrams.typ": *
+
 
 #let outline_style(it, outline_color: black) = {
   set text(font: "Noto Sans")
@@ -9,24 +11,24 @@
   let loc = it.element.location()
   let page_number = it.page // page number
   let (chapter_idx, _, header_text, ..) = it.body.children
-   
+
   let content_line = if it.level == 1 {
     v(26pt, weak: true)
     text(size: 15pt, weight: 700, fill: outline_color)[
       #box(stroke: none, width: indents.l1, inset: (y: 0.0em), chapter_idx)
       #header_text
       #h(1fr)
-      #page_number 
+      #page_number
     ]
   } else if it.level == 2 {
     v(10pt, weak: true)
     text(size: 10pt, weight: 500)[
       #box(stroke: none, width: indents.l1 + 2pt) // 2pt extra padding
       #box(stroke: none, width: indents.l2, chapter_idx)
-      #header_text 
-      #h(0.2em) 
-      #box(stroke: none, width: 1fr, inset: (y: 0.0em), line(length: 100%, stroke: fill_line_color + .5pt)) 
-      #h(0.2em) 
+      #header_text
+      #h(0.2em)
+      #box(stroke: none, width: 1fr, inset: (y: 0.0em), line(length: 100%, stroke: fill_line_color + .5pt))
+      #h(0.2em)
       #page_number
     ]
   } else if it.level == 3 {
@@ -35,8 +37,8 @@
       #box(stroke: none, width: indents.l1 + 2pt)
       #box(stroke: none, width: indents.l2 + 1pt) // 1pt extra padding
       #box(stroke: none, width: indents.l3, chapter_idx)
-      #header_text 
-      #h(1fr) 
+      #header_text
+      #h(1fr)
       #page_number
     ]
   }
@@ -45,7 +47,7 @@
 
 #let heading_style(it) = {
   set block(above: 1.4em, below: 1em)
-   
+
   if it.numbering == none {
     it
   } else if it.level == 1 {
@@ -66,7 +68,7 @@
   } else {
     it
   }
-} 
+}
 
 
 // Theorem environment
@@ -80,11 +82,14 @@
 
 
 
-#let quoteblock(background_color, front_color, bar_width: 0.25em, inset: 1em, contents) = pad(left: 0.5 * bar_width, block(
-  fill: none,
-  stroke: (left: bar_width + background_color),
-  pad(left: 0.5 * bar_width, block(fill: front_color, width: 100%, inset: inset, contents)),
-))
+#let quoteblock(background_color, front_color, bar_width: 0.25em, inset: 1em, contents) = pad(
+  left: 0.5 * bar_width,
+  block(
+    fill: none,
+    stroke: (left: bar_width + background_color),
+    pad(left: 0.5 * bar_width, block(fill: front_color, width: 100%, inset: inset, contents)),
+  ),
+)
 
 // Theorem environment for definition, lemma, proposition, corollary
 #let thmbox_quote(
@@ -109,7 +114,7 @@
   let boxfmt(name, number, body, title: auto, ..blockargs_individual) = {
     set block(breakable: true)
     set par(first-line-indent: 0pt)
-     
+
     if not name == none {
       name = [ #namefmt(name) ]
     } else {
@@ -139,7 +144,7 @@
   front_color: front_color,
   background_color: background_color,
   base_level: 2,
-  supplement: head
+  supplement: head,
 )
 
 // Theorem environment for example
@@ -175,15 +180,18 @@
     }
     title = titlefmt(title)
     body = bodyfmt(body)
-    pad(..padding, block(
-      width: 100%,
-      inset: 1.2em,
-      radius: 0.3em,
-      breakable: false,
-      ..blockargs.named(),
-      ..blockargs_individual.named(),
-      [#title#name#separator#v(3pt)#body],
-    ))
+    pad(
+      ..padding,
+      block(
+        width: 100%,
+        inset: 1.2em,
+        radius: 0.3em,
+        breakable: false,
+        ..blockargs.named(),
+        ..blockargs_individual.named(),
+        [#title#name#separator#v(3pt)#body],
+      ),
+    )
   }
   return thmenv(identifier, base, base_level, boxfmt).with(supplement: supplement)
 }
@@ -210,7 +218,7 @@
 #let gen_thm_envs(name_color_dict) = {
   let theorem_envs = name_color_dict.pairs().map(((env_name, env_colors)) => {
     // capitalize the first letter of the environment name
-    let header = upper(env_name.first()) + env_name.slice(1) 
+    let header = upper(env_name.first()) + env_name.slice(1)
     (env_name, thmbox_quote_style("theorem", header, env_colors.front, env_colors.background))
   })
   // convert list of pairs to dictionary to enable matching by environment name
@@ -231,6 +239,7 @@
   stroke: rgb("#88d6d1") + 1pt,
   breakable: true,
   base_level: 2,
+  supplement: "Example",
 )
 
 #let proof = thmproof("proof", "Proof", separator: [.])
@@ -241,39 +250,43 @@
   set page(margin: 1.9cm)
   set heading(numbering: "1.1")
   set par(leading: 0.55em, first-line-indent: 1.8em, justify: true)
-   
+
   // set font for document text
   // #set text(font: "New Computer Modern", size: 11pt, fallback: false)
   set text(font: "STIX Two Text", size: 11pt, fallback: false)
-   
+
   // set font for math text
   // #show math.equation: set text(font: "STIX Two Math", weight: 400)
   show math.equation: set text(font: "New Computer Modern Math", weight: 450, features: ("cv01",), fallback: false)
   show math.equation: set block(below: 8pt, above: 9pt)
   //#show raw: set text(font: "New Computer Modern Mono")
-   
+
   set strong(delta: 200)
-   
-  // setting for enumeration and list 
+
+  // setting for enumeration and list
   set enum(indent: 0.45em, body-indent: 0.45em, numbering: "(i)", start: 1)
   set list(indent: 0.45em, body-indent: 0.45em)
-   
-   
+
+
   // setting for paragraph
+  set par(leading: 0.7em)
   show par: set block(spacing: 0.55em)
-   
+
   // setting for heading
   show heading: heading_style
-   
+
   // setting for outline
   show outline.entry: outline_style.with(outline_color: rgb("#4682b4"))
-   
+
   // setting for theorem environment
   show: thmrules.with(qed-symbol: $square$)
 
   // setting reference style
   show ref: set text(rgb("#395094"))
-   
+
+  // setting link style
+  show link: set text(rgb("#395094"))
+
   doc
 }
 
