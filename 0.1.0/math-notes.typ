@@ -14,16 +14,47 @@
   let header_text = it.element.body
   let level2_padding = 2pt
   let level3_padding = 1pt
-  let vline_color = luma(60%)
+  let vline_color = outline_color.lighten(15%)
 
   let content_line = if it.level == 1 {
+    set text(size: 15pt, weight: 700, fill: outline_color)
     v(26pt, weak: true)
-    text(size: 15pt, weight: 700, fill: outline_color)[
-      #box(stroke: none, width: indents.l1, inset: (y: 0.0em), chapter_idx)
-      #header_text
-      #h(1fr)
-      #page_number
-    ]
+    box(
+      inset: (left: -0.5em),
+      grid(
+        columns: (auto, auto),
+        stroke: 0pt,
+        align: horizon,
+        column-gutter: 11pt,
+        box(
+          stroke: none,
+          width: indents.l1,
+          inset: (y: 0.0em),
+          circle(
+            stroke: none, //0.5pt + outline_color,
+            fill: outline_color.lighten(82%),
+          )[
+            #set align(center + horizon)
+            #text(
+              size: 17pt,
+              fill: outline_color.saturate(0%),
+              chapter_idx,
+            )
+          ],
+        ),
+        grid.cell[
+          #header_text
+          #h(1fr)
+          #page_number
+        ]
+      ),
+    )
+    // text(size: 15pt, weight: 700, fill: outline_color)[
+    //   #box(stroke: none, width: indents.l1, inset: (y: 0.0em), chapter_idx)
+    //   #header_text
+    //   #h(1fr)
+    //   #page_number
+    // ]
   } else if it.level == 2 {
     v(10pt, weak: true)
     text(size: 10pt, weight: 500)[
@@ -290,7 +321,7 @@
   show heading: heading_style
 
   // setting for outline "#4682b4"
-  show outline.entry: outline_style.with(outline_color: rgb("3a6ea5").darken(10%))
+  show outline.entry: outline_style.with(outline_color: rgb("f36619"))
 
   // setting for theorem environment
   show: thmrules.with(qed-symbol: $square$)
