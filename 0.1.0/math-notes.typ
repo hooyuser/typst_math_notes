@@ -3,14 +3,18 @@
 
 #import "commutative-diagrams.typ": *
 
-
 #let outline_style(it, outline_color: black) = {
   set text(font: "Noto Sans")
+  show link: set text(black)
   let fill_line_color = luma(70%)
   let indents = ("l1": 30pt, "l2": 28pt, "l3": 25pt)
   let loc = it.element.location()
   let page_number = it.page // page number
-  let (chapter_idx, _, header_text, ..) = it.body.children
+  let chapter_idx = it.body.children.at(0)
+  let header_text = it.element.body
+  let level2_padding = 2pt
+  let level3_padding = 1pt
+  let vline_color = luma(60%)
 
   let content_line = if it.level == 1 {
     v(26pt, weak: true)
@@ -23,7 +27,7 @@
   } else if it.level == 2 {
     v(10pt, weak: true)
     text(size: 10pt, weight: 500)[
-      #box(stroke: none, width: indents.l1 + 2pt) // 2pt extra padding
+      #box(stroke: none, width: indents.l1 + level2_padding) // level2_padding as extra padding
       #box(stroke: none, width: indents.l2, chapter_idx)
       #header_text
       #h(0.2em)
@@ -33,13 +37,23 @@
     ]
   } else if it.level == 3 {
     v(8pt, weak: true)
+    let is_first = chapter_idx.text.last() == "1"
     text(size: 9pt, weight: 400, fill: luma(15%))[
-      #box(stroke: none, width: indents.l1 + 2pt)
-      #box(stroke: none, width: indents.l2 + 1pt) // 1pt extra padding
-      #box(stroke: none, width: indents.l3, chapter_idx)
-      #header_text
-      #h(1fr)
-      #page_number
+      #let vline_offset = indents.l1 + indents.l2 * 0.5 - level2_padding - 0.3pt
+      #let vline_y_padding = 0.2em
+      #let outset_top = if is_first {
+        vline_y_padding
+      } else {
+        1em - vline_y_padding
+      }
+      #box(stroke: (left: 2pt + vline_color), outset: (left: -vline_offset, top: outset_top, bottom: vline_y_padding))[
+        #box(stroke: none, width: indents.l1 + level2_padding)
+        #box(stroke: none, width: indents.l2 + level3_padding) // level3_padding as extra padding
+        #box(stroke: none, width: indents.l3, chapter_idx)
+        #header_text
+        #h(1fr)
+        #page_number
+      ]
     ]
   }
   link(loc, content_line)
@@ -275,8 +289,8 @@
   // setting for heading
   show heading: heading_style
 
-  // setting for outline
-  show outline.entry: outline_style.with(outline_color: rgb("#4682b4"))
+  // setting for outline "#4682b4"
+  show outline.entry: outline_style.with(outline_color: rgb("3a6ea5").darken(10%))
 
   // setting for theorem environment
   show: thmrules.with(qed-symbol: $square$)
@@ -286,6 +300,9 @@
 
   // setting link style
   show link: set text(rgb("#395094"))
+
+  set math.mat(delim: "[")
+  set math.vec(delim: "[")
 
   doc
 }
