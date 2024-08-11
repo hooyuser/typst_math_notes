@@ -10,6 +10,17 @@
 ]
 
 
+#let reverse_arrow(arrow) = {
+  let res = arrow
+  if arrow.starts-with("<") {
+    res = (">" + res.slice(1)).rev()
+  }
+  if arrow.ends-with(">") {
+    res = (res.slice(0, -1) + "<").rev()
+  }
+  res
+}
+
 #let functor_diagram_info(
   F: $$,
   C: $$,
@@ -23,6 +34,8 @@
   Fg_e: $$,
   FX_e: $$,
   FY_e: $$,
+  g_arrow: "->",
+  Fg_arrow: "->",
   contravariant: false,
 ) = {
   let width = 1.7
@@ -40,12 +53,13 @@
   node(p_FX, FX)
   node(p_Y, Y)
   node(p_FY, FY)
-  edge(p_X, p_Y, g, "->")
+  edge(p_X, p_Y, g, g_arrow)
   let arrow_FX_FY = if contravariant {
-    "<-"
+    reverse_arrow(Fg_arrow)
   } else {
-    "->"
+    Fg_arrow
   }
+
   edge(p_FX, p_FY, Fg, arrow_FX_FY, left)
 
   if (FX_e != $$ or FY_e != $$) {
@@ -88,6 +102,8 @@
   FX_e: $$,
   FY_e: $$,
   contravariant: false,
+  g_arrow: "->",
+  Fg_arrow: "->",
 ) = commutative_diagram(
   functor_diagram_info(
     F: F,
@@ -103,6 +119,8 @@
     FX_e: FX_e,
     FY_e: FY_e,
     contravariant: contravariant,
+    g_arrow: g_arrow,
+    Fg_arrow: Fg_arrow,
   ),
 )
 
@@ -134,3 +152,54 @@
   edge(p_A11, p_A21, theta_l, theta_l_arrow)
   edge(p_A12, p_A22, theta_r, theta_r_arrow, left)
 })
+
+#let square_cd_element(
+  A11: ($$, $$),
+  A12: ($$, $$),
+  A21: ($$, $$),
+  A22: ($$, $$),
+  Ff: $$,
+  Gf: $$,
+  theta_l: ($$, $$),
+  theta_r: ($$, $$),
+  Ff_arrow: "->",
+  Gf_arrow: "->",
+  theta_l_arrow: ("->", "|->"),
+  theta_r_arrow: ("->", "|->"),
+) = commutative_diagram({
+
+  let width = 1
+  let height = 1
+
+  let (p_A11, p_A12, p_A21, p_A22) = ((2 * width, 0), (3 * width, 0), (2 * width, height), (3 * width, height))
+  let (p_a11, p_a12, p_a21, p_a22) = ((0, 0), (5 * width, 0), (0, height), (5 * width, height))
+  let (p_in11, p_in12, p_in21, p_in22) = ((width, 0), (4 * width, 0), (width, height), (4 * width, height))
+
+  node(p_A11, A11.at(0))
+  node(p_A12, A12.at(0))
+  node(p_A21, A21.at(0))
+  node(p_A22, A22.at(0))
+  edge(p_A11, p_A12, Ff, Ff_arrow)
+  edge(p_A21, p_A22, Gf, Gf_arrow, right)
+  edge(p_A11, p_A21, theta_l.at(0), theta_l_arrow.at(0), right)
+  edge(p_A12, p_A22, theta_r.at(0), theta_r_arrow.at(0), left)
+
+  if (A11.at(1) != $$ and A21.at(1) != $$) {
+    node(p_a11, A11.at(1))
+    node(p_a21, A21.at(1))
+    node(p_in11, $in.rev$)
+    node(p_in21, $in.rev$)
+    edge(p_a11, p_a21, theta_l.at(1), theta_l_arrow.at(1))
+  }
+
+  if (A12.at(1) != $$ and A22.at(1) != $$) {
+    node(p_a12, A12.at(1))
+    node(p_a22, A22.at(1))
+    node(p_in12, $in$)
+    node(p_in22, $in$)
+    edge(p_a12, p_a22, theta_r.at(1), theta_r_arrow.at(1), left)
+  }
+
+})
+
+
