@@ -7,8 +7,8 @@
   set text(font: "Noto Sans")
   show link: set text(black)
   let fill_line_color = luma(70%)
-  let indents = ("l1": 30pt, "l2": 28pt, "l3": 30pt) //indents for numbering
-  let extra_paddings = ("l2": 1.5pt, "l3": 2pt)
+  let indents = ("l1": 32pt, "l2": 28pt, "l3": 30pt) //indents for numbering
+  let extra_paddings = ("l2": 1pt, "l3": 2pt)
   //let indents = ("l1": 30pt, "l2": 28pt, "l3": 25pt)
   let loc = it.element.location()
   let page_number = it.page // page number
