@@ -1,5 +1,6 @@
 
 #import "@preview/ctheorems:1.1.2": *
+#import "@preview/hydra:0.5.1": hydra
 
 #import "commutative-diagrams.typ": *
 
@@ -285,9 +286,11 @@
 #let proof = thmproof("proof", "Proof", separator: [.])
 
 
-#let math_notes(doc) = {
+#let math_notes(doc, title: "TITLE", title_font: "Noto Serif") = {
   //#set page(width: 16cm, height: auto, margin: 1.5cm)
   set page(margin: 1.9cm)
+
+
   set heading(numbering: "1.1")
   set par(leading: 0.55em, first-line-indent: 1.8em, justify: true)
 
@@ -330,6 +333,98 @@
   set math.mat(delim: "[")
   set math.vec(delim: "[")
 
+
+  // Title Page
+  v(1fr)
+  align(center)[
+    #text(font: title_font, size: 35pt, weight: 500)[#smallcaps(title)]
+    #v(1.5fr)
+    #text(font: title_font, size: 15pt, datetime.today().display())
+  ]
+  v(1.2fr)
+
+  pagebreak()
+
+  // Table of Contents
+  block(inset: (left: -0.5em, right: -0.5em))[
+    #outline(title: text(font: "Noto Sans", size: 23pt, weight: 700, stretch: 150%)[Contents #v(1em)], depth: 3)
+  ]
+
+  pagebreak()
+
+  // Set Header and Footer
+  set page(
+    number-align: center,
+    header: context {
+
+      let chapters = heading.where(level: 1)
+      let sections = heading.where(level: 2)
+
+      // get an array of all chapters before current location
+      let chapters_before = query(chapters.before(here()))
+
+      // get an array of all chapters after current location
+      let chapters_after = query(chapters.after(here()))
+
+      // get an array of all sections before current location
+      let sections_before = query(sections.before(here()))
+
+      // display nothing if query result is empty
+      if chapters_before.len() == 0 or chapters_after.len() == 0 or sections_before.len() == 0 {
+        return
+      }
+
+      // get the absolute page number of the first page of the current chapter
+      let chapter_absolute_page_number = chapters_after.first().location().page()
+
+      // get the absolute page number of the current page
+      let absolute_page_number = here().page()
+
+      // if the current page is the first page of a chapter, then display nothing
+      if absolute_page_number == chapter_absolute_page_number {
+        return
+      }
+
+      // get the chapter number of the current chapter
+      let chapter_number = counter(chapters).display()
+
+      // get the chapter-section number of the current section
+      let section_number = counter(chapters.or(sections)).display()
+
+      // get the current chapter name
+      let chapter_name = chapters_before.last().body
+
+      // get the current section name
+      let section_name = sections_before.last().body
+
+      [*#chapter_number #upper(chapter_name)* #h(1fr) #smallcaps[#section_number #section_name]]
+
+    },
+    // footer: context {
+    //   let page_number = counter(page).get().first()
+      
+    //   if calc.odd(page_number) {
+    //     set align(left)
+    //     // counter(page).display("i")
+    //     circle(radius: auto, fill: orange)[
+    //       #set align(center + horizon)
+    //       #page_number
+    //     ]
+    //   } else {
+    //     set align(right)
+    //     circle(radius: auto, fill: orange)[
+    //       #set align(center + horizon)
+          
+    //       #page_number
+    //     ]
+    //   }
+    // },
+  )
+
+  // Start counting pages from here
+  counter(page).update(1)
+
+  // Main content
   doc
 }
 

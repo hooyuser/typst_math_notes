@@ -37,11 +37,15 @@
   g_arrow: "->",
   Fg_arrow: "->",
   contravariant: false,
+  width: 1.7,
+  width_in: 2.3,
+  width_e: 2.8,
+  node_y: (0.5, 1.9),
 ) = {
-  let width = 1.7
-  let width_in = 2.3
-  let width_e = 2.8
-  let (y1, y2) = (0.5, 1.9)
+  // let width = 1.7
+  // let width_in = 2.3
+  // let width_e = 2.8
+  let (y1, y2) = node_y
 
   let (p_C, p_D) = ((0, 0), (width, 0))
   let (p_X, p_Y) = ((0, y1), (0, y2))
@@ -124,6 +128,43 @@
   ),
 )
 
+#let square_cd_info(
+  A11: $$,
+  A12: $$,
+  A21: $$,
+  A22: $$,
+  Ff: $$,
+  Gf: $$,
+  theta_l: $$,
+  theta_r: $$,
+  Ff_arrow: "->",
+  Gf_arrow: "->",
+  theta_l_arrow: "->",
+  theta_r_arrow: "->",
+  left_top: (0,0),
+  right_bottom: (1,1),
+) = {
+  // ---------------------> x
+  // |
+  // |
+  // v
+  // y
+ 
+
+  let (x_min, y_min) = left_top
+  let (x_max, y_max) = right_bottom
+  let (p_A11, p_A12, p_A21, p_A22) = ((x_min, y_min), (x_max, y_min), (x_min, y_max), (x_max, y_max))
+
+  node(p_A11, A11)
+  node(p_A12, A12)
+  node(p_A21, A21)
+  node(p_A22, A22)
+  edge(p_A11, p_A12, Ff, Ff_arrow)
+  edge(p_A21, p_A22, Gf, Gf_arrow, right)
+  edge(p_A11, p_A21, theta_l, theta_l_arrow)
+  edge(p_A12, p_A22, theta_r, theta_r_arrow, left)
+}
+
 #let square_cd(
   A11: $$,
   A12: $$,
@@ -138,19 +179,20 @@
   theta_l_arrow: "->",
   theta_r_arrow: "->",
 ) = commutative_diagram({
-  let width = 1
-  let height = 1
-
-  let (p_A11, p_A12, p_A21, p_A22) = ((0, 0), (width, 0), (0, height), (width, height))
-
-  node(p_A11, A11)
-  node(p_A12, A12)
-  node(p_A21, A21)
-  node(p_A22, A22)
-  edge(p_A11, p_A12, Ff, Ff_arrow)
-  edge(p_A21, p_A22, Gf, Gf_arrow, right)
-  edge(p_A11, p_A21, theta_l, theta_l_arrow)
-  edge(p_A12, p_A22, theta_r, theta_r_arrow, left)
+  square_cd_info(
+    A11: A11,
+    A12: A12,
+    A21: A21,
+    A22: A22,
+    Ff: Ff,
+    Gf: Gf,
+    theta_l: theta_l,
+    theta_r: theta_r,
+    Ff_arrow: Ff_arrow,
+    Gf_arrow: Gf_arrow,
+    theta_l_arrow: theta_l_arrow,
+    theta_r_arrow: theta_r_arrow,
+  )
 })
 
 #let square_cd_element(
@@ -172,8 +214,8 @@
   let height = 1
 
   let (p_A11, p_A12, p_A21, p_A22) = ((2 * width, 0), (3 * width, 0), (2 * width, height), (3 * width, height))
-  let (p_a11, p_a12, p_a21, p_a22) = ((0, 0), (5 * width, 0), (0, height), (5 * width, height))
-  let (p_in11, p_in12, p_in21, p_in22) = ((width, 0), (4 * width, 0), (width, height), (4 * width, height))
+  let (p_a11, p_a12, p_a21, p_a22) = ((0, 0), (4.6 * width, 0), (0, height), (4.6 * width, height))
+  let (p_in11, p_in12, p_in21, p_in22) = ((width, 0), (3.8 * width, 0), (width, height), (3.8 * width, height))
 
   node(p_A11, A11.at(0))
   node(p_A12, A12.at(0))
@@ -201,5 +243,89 @@
   }
 
 })
+
+
+#let functor_diagram_square_cd(
+  F: $$,
+  C: $$,
+  D: $$,
+  g: $$,
+  X: $$,
+  Y: $$,
+  Fg: $$,
+  FX: $$,
+  FY: $$,
+  Fg_e: $$,
+  FX_e: $$,
+  FY_e: $$,
+  g_arrow: "=>",
+  Fg_arrow: "=>",
+  A11: $$,
+  A12: $$,
+  A21: $$,
+  A22: $$,
+  Ff: $$,
+  Gf: $$,
+  theta_l: $$,
+  theta_r: $$,
+  Ff_arrow: "->",
+  Gf_arrow: "->",
+  theta_l_arrow: "->",
+  theta_r_arrow: "->",
+) = commutative_diagram({
+    let (y1, y2) = (0.5, 1.9)
+
+    functor_diagram_info(
+      F: F,
+      C: C,
+      D: D,
+      g: g,
+      X: X,
+      Y: Y,
+      Fg: Fg,
+      FX: FX,
+      FY: FY,
+      Fg_e: Fg_e,
+      FX_e: FX_e,
+      FY_e: FY_e,
+      g_arrow: g_arrow,
+      Fg_arrow: Fg_arrow,
+      node_y: (y1, y2),
+    )
+    
+    let cd_start_x = 2.8
+    let cd_width = 2
+    
+    square_cd_info(
+      A11: A11,
+      A12: A12,
+      A21: A21,
+      A22: A22,
+      Ff: Ff,
+      Gf: Gf,
+      theta_l: theta_l,
+      theta_r: theta_r,
+      Ff_arrow: Ff_arrow,
+      Gf_arrow: Gf_arrow,
+      theta_l_arrow: theta_l_arrow,
+      theta_r_arrow: theta_r_arrow,
+      left_top: (cd_start_x, y1),
+      right_bottom: (cd_start_x + cd_width, y2),
+    )
+  })
+
+  #let adjunction_pair(
+    C: $$,
+    D: $$,
+    L: $$,
+    R: $$,
+  ) = commutative_diagram({
+    let (p_C, p_D, p_adj) = ((0, 0), (1, 0), (0.5, 0))
+    node(p_C, C)
+    node(p_D, D)
+    node(p_adj, $bot$)
+    edge(p_C, p_D, L, "->", bend: +35deg)
+    edge(p_C, p_D, R, "<-", bend: -35deg)
+  })
 
 
