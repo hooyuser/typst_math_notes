@@ -1,7 +1,5 @@
 
 #import "@preview/ctheorems:1.1.2": *
-#import "@preview/hydra:0.5.1": hydra
-
 #import "commutative-diagrams.typ": *
 
 #let outline_style(it, outline_color: black) = {
@@ -353,56 +351,118 @@
   pagebreak()
 
   // Set Header and Footer
+
+  // Define state for header and footer
+  // Set Header and Footer
+  let chapter_dict = state("chapter_dict", (:))
+  let current_chapter = state("current_chapterg", "")
+  let current_section = state("current_section", "")
+
+
+  show heading.where(level: 1): curr-heading => (
+    context {
+      curr-heading // preserve heading style, only add side effect
+      let chapter_page_number = str(here().page())
+      chapter_dict.update(headings => {
+
+        // if one page have more than one chapter, only keep the first one
+        if chapter_page_number not in headings {
+          headings.insert(chapter_page_number, curr-heading.body)
+        }
+        headings
+      })
+    }
+  )
+
+  show heading.where(level: 2): curr-heading => {
+    curr-heading
+    current_section.update(curr-heading.body)
+  }
+
   set page(
     number-align: center,
     header: context {
+      // get the absolute page number of the current page
+
+      let absolute_page_number = here().page()
+      //[#absolute_page_number]
+      //let chapters = query(selector(heading).or(here()))
+
+      let chapter_dict_final =  chapter_dict.final()
+      let page_num_str = str(absolute_page_number)
+      let is_first_page_of_chapter = page_num_str in chapter_dict_final
+
 
       let chapters = heading.where(level: 1)
       let sections = heading.where(level: 2)
-
-      // get an array of all chapters before current location
-      let chapters_before = query(chapters.before(here()))
-
-      // get an array of all chapters after current location
-      let chapters_after = query(chapters.after(here()))
-
-      // get an array of all sections before current location
-      let sections_before = query(sections.before(here()))
-
-      // display nothing if query result is empty
-      if chapters_before.len() == 0 or chapters_after.len() == 0 or sections_before.len() == 0 {
-        return
-      }
-
-      // get the absolute page number of the first page of the current chapter
-      let chapter_absolute_page_number = chapters_after.first().location().page()
-
-      // get the absolute page number of the current page
-      let absolute_page_number = here().page()
-
-      // if the current page is the first page of a chapter, then display nothing
-      if absolute_page_number == chapter_absolute_page_number {
-        return
-      }
-
       // get the chapter number of the current chapter
       let chapter_number = counter(chapters).display()
 
       // get the chapter-section number of the current section
-      let section_number = counter(chapters.or(sections)).display()
+      let section_counter = counter(chapters.or(sections)).display()
+      let section_number = if section_counter.len() <= 1 {""} else {
+      section_counter}
 
-      // get the current chapter name
-      let chapter_name = chapters_before.last().body
-
-      // get the current section name
-      let section_name = sections_before.last().body
-
-      [*#chapter_number #upper(chapter_name)* #h(1fr) #smallcaps[#section_number #section_name]]
-
+      if is_first_page_of_chapter {
+        //[VOID Chapter]
+        current_chapter.update(chapter_dict_final.at(page_num_str))
+        current_section.update("")
+      }
+      else {
+        let chapter_name = current_chapter.get()
+        let section_name = current_section.get()
+        [*#chapter_number #upper(chapter_name)* #h(1fr) #smallcaps[#section_number #section_name]]
+        // [#chapter_name#h(1fr)#section_name]
+      }
     },
+    // header: context {
+
+    //   let chapters = heading.where(level: 1)
+    //   let sections = heading.where(level: 2)
+
+    //   // get an array of all chapters before current location
+    //   let chapters_before = query(chapters.before(here()))
+
+    //   // get an array of all chapters after current location
+    //   let chapters_after = query(chapters.after(here()))
+
+    //   // get an array of all sections before current location
+    //   let sections_before = query(sections.before(here()))
+
+    //   // display nothing if query result is empty
+    //   if chapters_before.len() == 0 or chapters_after.len() == 0 or sections_before.len() == 0 {
+    //     return
+    //   }
+
+    //   // get the absolute page number of the first page of the current chapter
+    //   let chapter_absolute_page_number = chapters_after.first().location().page()
+
+    //   // get the absolute page number of the current page
+    //   let absolute_page_number = here().page()
+
+    //   // if the current page is the first page of a chapter, then display nothing
+    //   if absolute_page_number == chapter_absolute_page_number {
+    //     return
+    //   }
+
+    //   // get the chapter number of the current chapter
+    //   let chapter_number = counter(chapters).display()
+
+    //   // get the chapter-section number of the current section
+    //   let section_number = counter(chapters.or(sections)).display()
+
+    //   // get the current chapter name
+    //   let chapter_name = chapters_before.last().body
+
+    //   // get the current section name
+    //   let section_name = sections_before.last().body
+
+    //   [*#chapter_number #upper(chapter_name)* #h(1fr) #smallcaps[#section_number #section_name]]
+
+    // },
     // footer: context {
     //   let page_number = counter(page).get().first()
-      
+
     //   if calc.odd(page_number) {
     //     set align(left)
     //     // counter(page).display("i")
@@ -414,7 +474,7 @@
     //     set align(right)
     //     circle(radius: auto, fill: orange)[
     //       #set align(center + horizon)
-          
+
     //       #page_number
     //     ]
     //   }
