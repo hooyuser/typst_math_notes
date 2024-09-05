@@ -283,6 +283,8 @@
 
 #let proof = thmproof("proof", "Proof", separator: [.])
 
+#let remark = thmproof("remark", "Remark", separator: [.])
+
 
 #let math_notes(doc, title: "TITLE", title_font: "Noto Serif") = {
   //#set page(width: 16cm, height: auto, margin: 1.5cm)
@@ -385,8 +387,6 @@
       // get the absolute page number of the current page
 
       let absolute_page_number = here().page()
-      //[#absolute_page_number]
-      //let chapters = query(selector(heading).or(here()))
 
       let chapter_dict_final =  chapter_dict.final()
       let page_num_str = str(absolute_page_number)
@@ -404,7 +404,6 @@
       section_counter}
 
       if is_first_page_of_chapter {
-        //[VOID Chapter]
         current_chapter.update(chapter_dict_final.at(page_num_str))
         current_section.update("")
       }
