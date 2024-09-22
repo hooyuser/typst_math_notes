@@ -1,4 +1,3 @@
-
 #import "@preview/ctheorems:1.1.2": *
 #import "commutative-diagrams.typ": *
 
@@ -91,20 +90,21 @@
     it
   } else if it.level == 1 {
     set par(first-line-indent: 0em)
-    text(weight: 550, 22pt, tracking: 0.5pt, font: "Lato", fill: luma(30%))[
+    text(weight: 700, 22pt, tracking: 0.5pt, font: "Lato", fill: luma(30%))[
       #v(2em)
       Chapter #counter(heading).display(it.numbering)#v(1.1em, weak: true)
     ]
-    text(weight: 600, 28pt, font: "Lato", ligatures: false)[
+    text(weight: 700, 28pt, font: "Lato", ligatures: false)[
       #it.body #v(2em, weak: true)
     ]
   } else if it.level == 2 {
-    set text(16pt, weight: 600, font: "New Computer Modern")
+    set text(16pt, weight: 700, font: "New Computer Modern")
     it
   } else if it.level == 3 {
-    set text(13pt, weight: 600, font: "New Computer Modern")
+    set text(13pt, weight: 700, font: "New Computer Modern")
     it
   } else {
+    set text(weight: 700, font: "New Computer Modern")
     it
   }
 }
@@ -287,7 +287,7 @@
 
 
 #let math_notes(doc, title: "TITLE", title_font: "Noto Serif") = {
-  //#set page(width: 16cm, height: auto, margin: 1.5cm)
+  set text(fallback: false)
   set page(margin: 1.9cm)
 
 
@@ -297,6 +297,7 @@
   // set font for document text
   // #set text(font: "New Computer Modern", size: 11pt, fallback: false)
   set text(font: "STIX Two Text", size: 11pt, fallback: false)
+  set strong(delta: 200)
 
   // set font for math text
   // #show math.equation: set text(font: "STIX Two Math", weight: 400)
@@ -304,7 +305,7 @@
   show math.equation: set block(below: 8pt, above: 9pt)
   //#show raw: set text(font: "New Computer Modern Mono")
 
-  set strong(delta: 200)
+
 
   // setting for enumeration and list
   set enum(indent: 0.45em, body-indent: 0.45em, numbering: "(i)", start: 1)
@@ -337,7 +338,7 @@
   // Title Page
   v(1fr)
   align(center)[
-    #text(font: title_font, size: 35pt, weight: 500)[#smallcaps(title)]
+    #text(font: title_font, size: 35pt, weight: 500, ligatures: false)[#smallcaps(title)]
     #v(1.5fr)
     #text(font: title_font, size: 15pt, datetime.today().display())
   ]
