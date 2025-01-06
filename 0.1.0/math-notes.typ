@@ -1,5 +1,4 @@
-#import "@preview/ctheorems:1.1.2": *
-#import "commutative-diagrams.typ": *
+#import "@preview/ctheorems:1.1.3": *
 
 #let outline_style(it, outline_color: black) = {
   set text(font: "Noto Sans")
@@ -192,7 +191,7 @@
   head,
   ..blockargs,
   supplement: auto,
-  padding: (top: 0.5em, bottom: 0.5em),
+  padding: (top: 0.25em, bottom: 0.25em),
   namefmt: x => [(#x)],
   numberfmt: x => x,
   titlefmt: strong,
@@ -308,13 +307,12 @@
 
 
   // setting for enumeration and list
-  set enum(indent: 0.45em, body-indent: 0.45em, numbering: "(i)", start: 1)
+  set enum(indent: 0.45em, body-indent: 0.45em, numbering: "(i)", start: 1, spacing: 1em)
   set list(indent: 0.45em, body-indent: 0.45em)
 
 
   // setting for paragraph
-  set par(leading: 0.7em)
-  show par: set block(spacing: 0.55em)
+  set par(leading: 0.7em, spacing: 1em)
 
   // setting for heading
   show heading: heading_style
