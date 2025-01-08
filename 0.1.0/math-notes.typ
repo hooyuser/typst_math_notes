@@ -310,6 +310,13 @@
   set enum(indent: 0.45em, body-indent: 0.45em, numbering: "(i)", start: 1, spacing: 1em)
   set list(indent: 0.45em, body-indent: 0.45em)
 
+  show enum: it => {
+    show math.equation.where(block: true): eq => {
+      block(width: 100%, inset: 0pt, align(center, eq))
+    }
+    it
+  }
+
 
   // setting for paragraph
   set par(leading: 0.7em, spacing: 1em)
