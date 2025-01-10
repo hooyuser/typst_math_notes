@@ -141,15 +141,15 @@
   Gf_arrow: "->",
   theta_l_arrow: "->",
   theta_r_arrow: "->",
-  left_top: (0,0),
-  right_bottom: (1,1),
+  left_top: (0, 0),
+  right_bottom: (1, 1),
 ) = {
   // ---------------------> x
   // |
   // |
   // v
   // y
- 
+
 
   let (x_min, y_min) = left_top
   let (x_max, y_max) = right_bottom
@@ -209,7 +209,6 @@
   theta_l_arrow: ("->", "|->"),
   theta_r_arrow: ("->", "|->"),
 ) = commutative_diagram({
-
   let width = 1
   let height = 1
 
@@ -241,7 +240,6 @@
     node(p_in22, $in$)
     edge(p_a12, p_a22, theta_r.at(1), theta_r_arrow.at(1), left)
   }
-
 })
 
 
@@ -273,59 +271,59 @@
   theta_l_arrow: "->",
   theta_r_arrow: "->",
 ) = commutative_diagram({
-    let (y1, y2) = (0.5, 1.9)
+  let (y1, y2) = (0.5, 1.9)
 
-    functor_diagram_info(
-      F: F,
-      C: C,
-      D: D,
-      g: g,
-      X: X,
-      Y: Y,
-      Fg: Fg,
-      FX: FX,
-      FY: FY,
-      Fg_e: Fg_e,
-      FX_e: FX_e,
-      FY_e: FY_e,
-      g_arrow: g_arrow,
-      Fg_arrow: Fg_arrow,
-      node_y: (y1, y2),
-    )
-    
-    let cd_start_x = 2.8
-    let cd_width = 2
-    
-    square_cd_info(
-      A11: A11,
-      A12: A12,
-      A21: A21,
-      A22: A22,
-      Ff: Ff,
-      Gf: Gf,
-      theta_l: theta_l,
-      theta_r: theta_r,
-      Ff_arrow: Ff_arrow,
-      Gf_arrow: Gf_arrow,
-      theta_l_arrow: theta_l_arrow,
-      theta_r_arrow: theta_r_arrow,
-      left_top: (cd_start_x, y1),
-      right_bottom: (cd_start_x + cd_width, y2),
-    )
-  })
+  functor_diagram_info(
+    F: F,
+    C: C,
+    D: D,
+    g: g,
+    X: X,
+    Y: Y,
+    Fg: Fg,
+    FX: FX,
+    FY: FY,
+    Fg_e: Fg_e,
+    FX_e: FX_e,
+    FY_e: FY_e,
+    g_arrow: g_arrow,
+    Fg_arrow: Fg_arrow,
+    node_y: (y1, y2),
+  )
 
-  #let adjunction_pair(
-    C: $$,
-    D: $$,
-    L: $$,
-    R: $$,
-  ) = commutative_diagram({
-    let (p_C, p_D, p_adj) = ((0, 0), (1, 0), (0.5, 0))
-    node(p_C, C)
-    node(p_D, D)
-    node(p_adj, $bot$)
-    edge(p_C, p_D, L, "->", bend: +35deg)
-    edge(p_C, p_D, R, "<-", bend: -35deg)
-  })
+  let cd_start_x = 2.8
+  let cd_width = 2
+
+  square_cd_info(
+    A11: A11,
+    A12: A12,
+    A21: A21,
+    A22: A22,
+    Ff: Ff,
+    Gf: Gf,
+    theta_l: theta_l,
+    theta_r: theta_r,
+    Ff_arrow: Ff_arrow,
+    Gf_arrow: Gf_arrow,
+    theta_l_arrow: theta_l_arrow,
+    theta_r_arrow: theta_r_arrow,
+    left_top: (cd_start_x, y1),
+    right_bottom: (cd_start_x + cd_width, y2),
+  )
+})
+
+#let adjunction_pair(
+  C: $$,
+  D: $$,
+  L: $$,
+  R: $$,
+) = commutative_diagram({
+  let (p_C, p_D, p_adj) = ((0, 0), (1, 0), (0.5, 0))
+  node(p_C, C)
+  node(p_D, D)
+  node(p_adj, $bot$)
+  edge(p_C, p_D, L, "->", bend: +35deg)
+  edge(p_C, p_D, R, "<-", bend: -35deg)
+})
 
 
