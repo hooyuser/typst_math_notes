@@ -110,13 +110,9 @@
 
 
 // Theorem environment
-#let thm_env_head_sans(name, color) = [#text(font: "Latin Modern Sans", weight: 700, fill: color)[#name]]
+#let thm_env_head_sans(name, color) = [#text(font: "Latin Modern Sans", weight: 500, fill: color)[#name]]
 
 #let thm_env_name_sans(name, color) = [#text(font: "Noto Sans Display", weight: 500, fill: color, size: 10.5pt)[#name]]
-
-
-#let theorem_color = rgb("#f19000")
-#let theorem_color_bg = rgb("#fdf8ea")
 
 
 
@@ -310,6 +306,7 @@
   set enum(indent: 0.45em, body-indent: 0.45em, numbering: "(i)", start: 1, spacing: 1em)
   set list(indent: 0.45em, body-indent: 0.45em)
 
+  // guarantee that equations take the full width of the page
   show enum: it => {
     show math.equation.where(block: true): eq => {
       block(width: 100%, inset: 0pt, align(center, eq))
