@@ -85,7 +85,7 @@
       fill: header_color,
       theorem_prefix + h(0.15em) + theorem_number + h(0.3em) + theorem_title + h(1fr),
     )
-    #v(-0.3em)
+    
     #content
   ]
 ]

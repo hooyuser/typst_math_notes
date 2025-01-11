@@ -1,6 +1,6 @@
 #import "@preview/cetz:0.3.1"
 
-#import "@preview/fletcher:0.5.2" as fletcher: diagram, node, edge
+#import "@preview/fletcher:0.5.4" as fletcher: diagram, node, edge
 
 
 // define commutative diagram
