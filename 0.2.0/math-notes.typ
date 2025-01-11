@@ -291,23 +291,70 @@
 
       let chapters = heading.where(level: 1)
       let sections = heading.where(level: 2)
-      // get the chapter number of the current chapter
-      let chapter_number = counter(chapters).display()
 
-      // get the chapter-section number of the current section
-      let section_counter = counter(chapters.or(sections)).display()
-      let section_number = if section_counter.len() <= 1 { "" } else {
-        section_counter
+
+      // get the first section after the current location
+      let after_here_section = query(sections.after(here())).at(0, default: none)
+
+      // get the location of the first section after the current location
+      let after_here_section_loc = if after_here_section != none {
+        after_here_section.location()
       }
 
+      // get the page number of the first section after the current location
+      let after_here_section_page = if after_here_section != none {
+        after_here_section_loc.page()
+      }
+
+      // get the y position of the first section after the current location
+      let after_here_section_pos = if after_here_section != none {
+        after_here_section_loc.position().y
+      }
+
+      // calculate top margin
+      let top_margin = if page.margin == auto or type(page.margin) == dictionary and page.margin.top == auto {
+        let small-side = calc.min(page.height, page.width)
+        (2.5 / 21) * small-side // According to docs, this is the 'auto' margin
+      } else {
+        if type(page.margin) == relative {
+          measure(line(length: page.margin)).width
+        } else {
+          measure(line(length: page.margin.top)).width
+        }
+      } // Not sure about this implementation
+
+
+      // check if the first line of the current page is a new section
+      // check if the first line of the current page is a new section
+      let first_line_is_new_section = (
+        after_here_section_pos != none
+          and absolute_page_number == after_here_section_page
+          and after_here_section_pos < top_margin + 0.01pt
+      )
+
+      // if the current page is the first page of a chapter, then display nothing
       if is_first_page_of_chapter {
         current_chapter.update(chapter_dict_final.at(page_num_str))
         current_section.update("")
       } else {
+        // if the current page is not the first page of a chapter
+
+        // get the chapter number before the current location
+        let chapter_number = counter(chapters).display()
         let chapter_name = current_chapter.get()
-        let section_name = current_section.get()
+
+        let (section_number, section_name) = if first_line_is_new_section and after_here_section != none {
+          // count all sections before the first section after the current location (including the the first section after the current location)
+          let section_number = counter(heading).at(after_here_section_loc).map(str).join(".")
+          let section_name = after_here_section.body
+          (section_number, section_name)
+        } else {
+          // count all sections before the current location
+          let section_counter = counter(chapters.or(sections)).display()
+          let section_name = current_section.get()
+          (section_counter, section_name)
+        }
         [*#chapter_number #upper(chapter_name)* #h(1fr) #smallcaps[#section_number #section_name]]
-        // [#chapter_name#h(1fr)#section_name]
       }
     },
 
