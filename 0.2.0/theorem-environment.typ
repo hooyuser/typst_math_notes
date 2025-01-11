@@ -86,6 +86,7 @@
       theorem_prefix + h(0.15em) + theorem_number + h(0.3em) + theorem_title + h(1fr),
     )
     
+    #v(0.1em)
     #content
   ]
 ]
@@ -108,22 +109,44 @@
 // -----------------------------------------------------------------
 
 // Define theorem environment generator, returns a theorem environment API for exporting
+// - If there is only one argument input_1, then content = input_1
+// - If there are two arguments input_1 and input_2, then (title, content) = (input_1, input_2)
 #let theorem_env_generator(
   env_name,
   env_class: "theorem",
   header_color: black,
   block_func: block,
 ) = (
-  title,
-  content,
-) => theorem_env(
-  env_name,
-  env_class,
-  title,
-  content,
-  header_color,
-  block_func,
-)
+  input_1,
+  ..input_2,
+) => {
+  if input_2.named().len() > 0 {
+    panic("Theorem environment does not accept named arguments")
+  }
+  if input_2.pos().len() == 0 {
+    theorem_env(
+      env_name,
+      env_class,
+      "",
+      input_1,
+      header_color,
+      block_func,
+    )
+  }
+  else if input_2.pos().len() == 1 {
+    theorem_env(
+      env_name,
+      env_class,
+      input_1,
+      input_2.at(0),
+      header_color,
+      block_func,
+    )
+  }
+  else {
+    panic("Theorem environment accepts at most two arguments")
+  }
+}
 
 #let proof_env_generator(
   title: "Proof",
