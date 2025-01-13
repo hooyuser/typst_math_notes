@@ -44,7 +44,7 @@
 
 // Plain block with no special styling
 #let proof_block(
-  inset: (x: 1em, y: 1em),
+  inset: (x: 1em, top: 0em, bottom: 1em),
 ) = block.with(
   inset: inset,
   width: 100%,
@@ -85,7 +85,7 @@
       fill: header_color,
       theorem_prefix + h(0.15em) + theorem_number + h(0.3em) + theorem_title + h(1fr),
     )
-    
+
     #v(0.1em)
     #content
   ]
@@ -132,8 +132,7 @@
       header_color,
       block_func,
     )
-  }
-  else if input_2.pos().len() == 1 {
+  } else if input_2.pos().len() == 1 {
     theorem_env(
       env_name,
       env_class,
@@ -142,8 +141,7 @@
       header_color,
       block_func,
     )
-  }
-  else {
+  } else {
     panic("Theorem environment accepts at most two arguments")
   }
 }

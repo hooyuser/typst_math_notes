@@ -160,7 +160,7 @@
 
 // Theorem environment for proof and remark
 #let proof = proof_env_generator(title: "Proof")
-#let remark = proof_env_generator(title: "Proof")
+#let remark = proof_env_generator(title: "Remark")
 
 
 // -----------------------------------------------------------------
