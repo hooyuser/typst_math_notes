@@ -1,4 +1,4 @@
-#import "@preview/cetz:0.3.1"
+#import "@preview/cetz:0.3.2"
 
 #import "@preview/fletcher:0.5.4" as fletcher: diagram, node, edge
 
@@ -57,7 +57,7 @@
   node(p_FX, FX)
   node(p_Y, Y)
   node(p_FY, FY)
-  edge(p_X, p_Y, g, g_arrow)
+  edge(p_X, p_Y, g, g_arrow, right)
   let arrow_FX_FY = if contravariant {
     reverse_arrow(Fg_arrow)
   } else {
