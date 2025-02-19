@@ -2,7 +2,7 @@
 
 Example
 
-```
+```typ
 #import "preamble.typ": math_notes, definition, proposition, lemma, theorem, corollary, example, proof
 
 #show: math_notes
