@@ -18,8 +18,8 @@
   let extra_paddings = ("l2": 1pt, "l3": 2pt)
   //let indents = ("l1": 30pt, "l2": 28pt, "l3": 25pt)
   let loc = it.element.location()
-  let page_number = it.page // page number
-  let chapter_idx = it.body.children.at(0)
+  let page_number = it.page() // page number
+  let chapter_idx = it.prefix()
   let header_text = it.element.body
   let level2_padding = 2pt
   let level3_padding = 1pt
@@ -191,7 +191,7 @@
 
 
   set heading(numbering: "1.1")
-  set par(leading: 0.55em, first-line-indent: 1.8em, justify: true)
+  //set par(leading: 0.55em, first-line-indent: 1.8em, justify: true)
 
   // set font for document text
   // #set text(font: "New Computer Modern", size: 11pt, fallback: false)
@@ -216,9 +216,6 @@
     }
     it
   }
-
-  // setting for paragraph
-  set par(leading: 0.7em, spacing: 1em)
 
   // setting for heading
   show heading: heading_style
@@ -248,6 +245,9 @@
     #outline(title: text(font: "Noto Sans", size: 23pt, weight: 700, stretch: 150%)[Contents #v(1em)], depth: 3)
   ]
   pagebreak()
+
+  // Set the main text paragraph style
+  set par(leading: 0.7em, spacing: 1em, first-line-indent: 1.8em, justify: true)
 
   // Set Header and Footer
 
