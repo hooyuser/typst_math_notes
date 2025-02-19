@@ -3,9 +3,11 @@
 Example
 
 ```typ
-#import "preamble.typ": math_notes, definition, proposition, lemma, theorem, corollary, example, proof
+#import "@local/math-notes:0.2.0": *
 
-#show: math_notes
+#show: math_notes.with(
+  title: [ELLIPTIC CURVES],
+)
 
 #block(inset: (left: -0.5em, right: -0.5em))[
   #outline(title: text(font: "Noto Sans", size: 23pt, weight: 700, stretch: 150%)[Contents #v(1em)], depth: 3)
