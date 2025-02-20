@@ -91,14 +91,48 @@
   ]
 ]
 
+#let add-suffix(content, suffix) = {
+  let space = ([ ], parbreak())
+  if content.has("children") {
+    let idx = content.children.len() - 1
+    while idx >= 0 and content.children.at(idx) in space {
+      idx = idx - 1 // skip all the spaces at the end
+    }
+    content.children.slice(0, idx).join() // preserve the elements except the last element
+    let last_ele = content.children.at(idx) // get the last element that is not a space
+    if last_ele.has("children") {
+      add-suffix(last_ele, suffix)
+    } else if last_ele.has("child") {
+      add-suffix(last_ele.child, suffix)
+    } else {
+      if repr(last_ele.func()) == "item" {
+        let element_func = content.children.at(idx).func()
+        let element_body = content.children.at(idx).body
+        element_func[#element_body#suffix]
+      } else {
+        last_ele + suffix
+      }
+    }
+  } else {
+    content + suffix
+  }
+}
+
+// how to combine prefix, content, and suffix
+#let proof-transform(prefix, content, suffix) = {
+  prefix
+  add-suffix(content, suffix)
+}
+
 // Define proof environment
 #let proof_env(
   content,
   prefix: text(style: "oblique", [Proof.]),
   suffix: h(1fr) + $square$,
   block_func: block,
+  transform: proof-transform,
 ) = figure(
-  block_func(prefix + content + suffix),
+  block_func(transform(prefix, content, suffix)),
   kind: "thm-env-uncounted",
   supplement: "Proof",
   outlined: false,

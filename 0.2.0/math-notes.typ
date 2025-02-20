@@ -160,7 +160,10 @@
 
 // Theorem environment for proof and remark
 #let proof = proof_env_generator(title: "Proof")
-#let remark = proof_env_generator(title: "Remark")
+#let remark = proof_env_generator(
+  title: "Remark",
+  suffix: [#text(fill: luma(40%), baseline: -0.05em)[#h(1fr)$square.filled$]],
+)
 
 
 // -----------------------------------------------------------------
