@@ -182,7 +182,7 @@
 
 #let proof_env_generator(
   title: "Proof",
-  suffix: [#h(1fr) $square$],
+  suffix: [#h(1fr)#sym.wj#sym.space.nobreak$square#h(-0.09em)$],
   block_func: proof_block(),
 ) = content => proof_env(
   content,

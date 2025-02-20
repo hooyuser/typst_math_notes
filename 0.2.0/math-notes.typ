@@ -162,7 +162,7 @@
 #let proof = proof_env_generator(title: "Proof")
 #let remark = proof_env_generator(
   title: "Remark",
-  suffix: [#text(fill: luma(40%), baseline: -0.05em)[#h(1fr)$square.filled$]],
+  suffix: [#text(fill: luma(40%), baseline: -0.05em)[#h(1fr)#sym.wj#sym.space.nobreak$square.filled#h(-0.09em)$]],
 )
 
 
