@@ -94,20 +94,21 @@
 #let add-suffix(content, suffix) = {
   let space = ([ ], parbreak())
   if content.has("children") {
-    let idx = content.children.len() - 1
-    while idx >= 0 and content.children.at(idx) in space {
+    let children = content.children
+    let idx = children.len() - 1
+    while idx >= 0 and children.at(idx) in space {
       idx = idx - 1 // skip all the spaces at the end
     }
-    content.children.slice(0, idx).join() // preserve the elements except the last element
-    let last_ele = content.children.at(idx) // get the last element that is not a space
+    children.slice(0, idx).join() // preserve the elements except the last element
+    let last_ele = children.at(idx) // get the last element that is not a space
     if last_ele.has("children") {
       add-suffix(last_ele, suffix)
     } else if last_ele.has("child") {
       add-suffix(last_ele.child, suffix)
     } else {
-      if repr(last_ele.func()) == "item" {
-        let element_func = content.children.at(idx).func()
-        let element_body = content.children.at(idx).body
+      if last_ele.func() in (std.list.item, std.enum.item) {
+        let element_func = last_ele.func()
+        let element_body = last_ele.body
         element_func[#element_body#suffix]
       } else {
         last_ele + suffix
@@ -182,7 +183,7 @@
 
 #let proof_env_generator(
   title: "Proof",
-  suffix: [#h(1fr)#sym.wj#sym.space.nobreak$square#h(-0.09em)$],
+  suffix: [#box(width: 0pt)#h(1fr)#sym.wj#sym.space.nobreak$square#h(-0.09em)$],
   block_func: proof_block(),
 ) = content => proof_env(
   content,

@@ -6,90 +6,9 @@
   rounded_block,
 )
 
+#import "outline.typ": outline_style
 
-// -----------------------------------------------------------------
-// Outline Style
-// -----------------------------------------------------------------
-#let outline_style(it, outline_color: black) = {
-  set text(font: "Noto Sans")
-  show link: set text(black)
-  let fill_line_color = luma(70%)
-  let indents = ("l1": 32pt, "l2": 28pt, "l3": 30pt) //indents for numbering
-  let extra_paddings = ("l2": 1pt, "l3": 2pt)
-  //let indents = ("l1": 30pt, "l2": 28pt, "l3": 25pt)
-  let loc = it.element.location()
-  let page_number = it.page() // page number
-  let chapter_idx = it.prefix()
-  let header_text = it.element.body
-  let level2_padding = 2pt
-  let level3_padding = 1pt
-  let vline_color = rgb("f36619").darken(0%)
-
-  let content_line = if it.level == 1 {
-    set text(size: 16pt, weight: 700, fill: outline_color)
-    v(26pt, weak: true)
-    let inset_left = 0.5em
-    box(
-      inset: (left: -inset_left),
-      grid(
-        columns: (indents.l1 + inset_left, auto),
-        align: horizon,
-        circle(
-          stroke: 0.1pt + outline_color,
-          fill: outline_color.lighten(82%),
-        )[
-          #set align(center + horizon)
-          #text(size: 17pt, fill: outline_color.saturate(0%), chapter_idx)
-        ],
-        grid.cell[
-          #header_text
-          #h(1fr)
-          #page_number
-        ]
-      ),
-    )
-    v(-10pt, weak: true)
-  } else if it.level == 2 {
-    v(10pt, weak: true)
-    set text(size: 12pt, weight: 600)
-    h(indents.l1 + extra_paddings.l2) // level2_padding as extra padding
-    box(width: indents.l2, chapter_idx)
-    header_text
-    h(0.4em)
-    box(
-      stroke: none,
-      width: 1fr,
-      inset: (y: 0.0em),
-      line(length: 100%, stroke: fill_line_color + .5pt),
-    )
-    h(0.4em)
-    page_number
-  } else if it.level == 3 {
-    v(8pt, weak: true)
-    let is_first = chapter_idx.text.last() == "1"
-    set text(size: 9.5pt, weight: 400, fill: luma(15%))
-
-    let vline_offset = indents.l1 + extra_paddings.l2 + 0.9em // 0.9em needs to fine-tuned for the vertical line
-    let vline_y_padding = 0.2em
-    let outset_top = if is_first {
-      vline_y_padding
-    } else {
-      1em - vline_y_padding
-    }
-    box(
-      stroke: (left: 2pt + vline_color),
-      outset: (left: -vline_offset, top: outset_top, bottom: vline_y_padding),
-      {
-        h(indents.l1 + indents.l2 + extra_paddings.l3) // level3_padding as extra padding
-        box(width: indents.l3, chapter_idx)
-        header_text
-        h(1fr)
-        page_number
-      },
-    )
-  }
-  link(loc, content_line)
-}
+#import "@preview/in-dexter:0.7.0" as in-dexter: make-index
 
 
 // -----------------------------------------------------------------
@@ -99,7 +18,20 @@
   set block(above: 1.4em, below: 1em)
 
   if it.numbering == none {
-    it
+    let body = it.body
+    if body.has("children") {
+      for ele in body.children {
+        if ele.func() == metadata {
+          if ele.value == "index" {
+            text(weight: 700, 28pt, font: "Lato", ligatures: false)[
+              #it.body #v(2em, weak: true)
+            ]
+          }
+        }
+      }
+    } else {
+      it
+    }
   } else if it.level == 1 {
     set par(first-line-indent: 0em)
     text(weight: 700, 22pt, tracking: 0.5pt, font: "Lato", fill: luma(30%))[
@@ -162,7 +94,9 @@
 #let proof = proof_env_generator(title: "Proof")
 #let remark = proof_env_generator(
   title: "Remark",
-  suffix: [#text(fill: luma(40%), baseline: -0.05em)[#h(1fr)#sym.wj#sym.space.nobreak$square.filled#h(-0.09em)$]],
+  suffix: [#text(fill: luma(40%), baseline: -0.05em)[#box(
+        width: 0pt,
+      )#h(1fr)#sym.wj#sym.space.nobreak$square.filled#h(-0.09em)$]],
 )
 
 
@@ -183,6 +117,33 @@
   pagebreak()
 }
 
+#let index_chapters = [
+  #pagebreak()
+
+  #set heading(numbering: none)
+
+  = Notation Index #metadata("index")
+
+  #columns(3)[
+    #make-index(
+      indexes: "Math",
+      use-page-counter: true,
+      sort-order: upper,
+    )
+  ]
+
+  #pagebreak()
+  = Subject Index #metadata("index")
+
+  #columns(3)[
+    #make-index(
+      indexes: "Default",
+      use-page-counter: true,
+      sort-order: upper,
+    )
+  ]
+]
+
 
 // -----------------------------------------------------------------
 // Math Notes Template
@@ -191,7 +152,6 @@
 #let math_notes(doc, title: "TITLE", title_font: "Noto Serif") = {
   set text(fallback: false)
   set page(margin: 1.9cm)
-
 
   set heading(numbering: "1.1")
   //set par(leading: 0.55em, first-line-indent: 1.8em, justify: true)
@@ -433,5 +393,7 @@
 
   // Main content
   doc
+
+  index_chapters
 }
 
