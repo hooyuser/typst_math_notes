@@ -2,19 +2,61 @@
   theorem_env_initiate,
   theorem_env_generator,
   proof_env_generator,
-  gen_thm_envs,
+  quote_style_theorem,
   rounded_block,
 )
 
 #import "outline.typ": outline_style
+#import "@preview/in-dexter:0.7.0": make-index
 
-#import "@preview/in-dexter:0.7.0" as in-dexter: make-index
+
+// -----------------------------------------------------------------
+// Theme
+// -----------------------------------------------------------------
+#let theme_dict = (
+  light: (
+    text: rgb("#000000"),
+    background: rgb("#ffffff"),
+    chapter_color: luma(30%),
+    ref_color: rgb("#395094"),
+    thm_env_color_dict: (
+      theorem: (front: rgb("#f19000"), background: rgb("#fdf8ea")),
+      proposition: (front: rgb("#30773c"), background: rgb("#ebf4ec")),
+      lemma: (front: rgb("#907a6b"), background: rgb("#f6f4f2")),
+      corollary: (front: rgb("#a74eb4"), background: rgb("#f9effb")),
+      definition: (front: rgb("#000069"), background: rgb("#f2f2f9")),
+    ),
+    example_env_color_dict: (
+      frame: rgb("#88d6d1"),
+      background: rgb("#f2fbf8"),
+      header: rgb("#2a7f7f"),
+    ),
+  ),
+  dark: (
+    text: luma(89.87%),
+    background: rgb("#292B2E"),
+    chapter_color: luma(74.51%),
+    ref_color: rgb("#8f9fcf"),
+    thm_env_color_dict: (
+      theorem: (front: rgb("#f19000"), background: rgb("#3d3220")),
+      proposition: (front: rgb("#8cd898"), background: rgb("#2a3b2a")),
+      lemma: (front: rgb("#d3a280"), background: rgb("#3b3731")),
+      corollary: (front: rgb("#a74eb4"), background: rgb("#3d2f3d")),
+      definition: (front: rgb("#6aaeed"), background: rgb("#2f2f3d")),
+    ),
+    example_env_color_dict: (
+      frame: rgb("#74b7b2"),
+      background: rgb("#323737"),
+      header: rgb("#7ed0d0"),
+    ),
+  ),
+)
 
 
 // -----------------------------------------------------------------
 // Heading Style
 // -----------------------------------------------------------------
-#let heading_style(it) = {
+#let heading_style(it, chapter_color: luma(100%)) = {
   set block(above: 1.4em, below: 1em)
 
   if it.numbering == none {
@@ -34,7 +76,7 @@
     }
   } else if it.level == 1 {
     set par(first-line-indent: 0em)
-    text(weight: 700, 22pt, tracking: 0.5pt, font: "Lato", fill: luma(30%))[
+    text(weight: 700, 22pt, tracking: 0.5pt, font: "Lato", fill: chapter_color)[
       #v(2em)
       Chapter #counter(heading).display(it.numbering)#v(1.1em, weak: true)
     ]
@@ -59,15 +101,45 @@
 // -----------------------------------------------------------------
 
 // Define theorem environments
-#let thm_env_color_dict = (
-  theorem: (front: rgb("#f19000"), background: rgb("#fdf8ea")),
-  proposition: (front: rgb("#30773c"), background: rgb("#ebf4ec")),
-  lemma: (front: rgb("#907a6b"), background: rgb("#f6f4f2")),
-  corollary: (front: rgb("#a74eb4"), background: rgb("#f9effb")),
-  definition: (front: rgb("#000069"), background: rgb("#f2f2f9")),
+// #let thm_env_color_dict_bright = (
+//   theorem: (front: rgb("#f19000"), background: rgb("#fdf8ea")),
+//   proposition: (front: rgb("#30773c"), background: rgb("#ebf4ec")),
+//   lemma: (front: rgb("#907a6b"), background: rgb("#f6f4f2")),
+//   corollary: (front: rgb("#a74eb4"), background: rgb("#f9effb")),
+//   definition: (front: rgb("#000069"), background: rgb("#f2f2f9")),
+// )
+// #let thm_env_color_dict_dark = (
+//   theorem: (front: rgb("#f19000"), background: rgb("#3d3220")),
+//   proposition: (front: rgb("#30773c"), background: rgb("#2a3b2a")),
+//   lemma: (front: rgb("#907a6b"), background: rgb("#3b3731")),
+//   corollary: (front: rgb("#a74eb4"), background: rgb("#3d2f3d")),
+//   definition: (front: rgb("#000069"), background: rgb("#2f2f3d")),
+// )
+
+
+#let with-theme-config(fn) = context {
+  let theme = state("math-notes-theme").get()
+  fn(theme_dict.at(theme))
+}
+
+
+// wrap with a figure as a temporary fix
+#let theorem_func(env_name, ..env_body) = figure(
+  with-theme-config(theme_config => {
+    let color_dict = theme_config.at("thm_env_color_dict")
+    let env_colors = color_dict.at(env_name)
+    quote_style_theorem(env_name, env_colors, ..env_body)
+  }),
+  kind: "thm-env-counted",
+  supplement: env_name,
 )
-// Export theorem environments
-#let (definition, proposition, lemma, theorem, corollary) = gen_thm_envs(thm_env_color_dict)
+
+#let gen_theorem_func_from_name(env_name) = theorem_func.with(env_name)
+
+
+#let (definition, proposition, lemma, theorem, corollary) = for name in theme_dict.light.thm_env_color_dict.keys() {
+  ((name): gen_theorem_func_from_name(name))
+}
 
 
 // Define theorem environment for example
@@ -76,19 +148,26 @@
   background: rgb("#f2fbf8"),
   header: rgb("#2a7f7f"),
 )
+
 // Export example environment
-#let example = {
-  let (frame, background, header) = (example_env_colors.frame, example_env_colors.background, example_env_colors.header)
-  theorem_env_generator(
-    "Example",
-    env_class: "example",
-    header_color: header,
-    block_func: rounded_block(
-      stroke_color: frame,
-      fill_color: background,
-    ),
-  )
-}
+#let example = (..body) => figure(
+  with-theme-config(theme_config => {
+    let (frame, background, header) = theme_config.at("example_env_color_dict")
+    theorem_env_generator(
+      "Example",
+      env_class: "example",
+      header_color: header,
+      block_func: rounded_block(
+        stroke_color: frame,
+        fill_color: background,
+      ),
+    )(..body)
+  }),
+  kind: "thm-env-counted",
+  supplement: "example",
+)
+
+
 
 // Theorem environment for proof and remark
 #let proof = proof_env_generator(title: "Proof")
@@ -124,7 +203,7 @@
 
   = Notation Index #metadata("index")
 
-  #columns(2)[
+  #columns(3)[
     #make-index(
       indexes: "Math",
       use-page-counter: true,
@@ -135,7 +214,7 @@
   #pagebreak()
   = Subject Index #metadata("index")
 
-  #columns(3)[
+  #columns(2)[
     #make-index(
       indexes: "Default",
       use-page-counter: true,
@@ -149,16 +228,24 @@
 // Math Notes Template
 // -----------------------------------------------------------------
 
-#let math_notes(doc, title: "TITLE", title_font: "Noto Serif") = {
+#let theme_state = state("math-notes-theme", none)
+
+#let math_notes(doc, title: "TITLE", title_font: "Noto Serif", theme: "light") = {
+  context theme_state.update(theme)
   set text(fallback: false)
-  set page(margin: 1.9cm)
+
+  let theme_config = theme_dict.at(theme)
+  let page_background_color = theme_config.background
+  set page(margin: 1.9cm, fill: page_background_color)
+
 
   set heading(numbering: "1.1")
   //set par(leading: 0.55em, first-line-indent: 1.8em, justify: true)
 
   // set font for document text
   // #set text(font: "New Computer Modern", size: 11pt, fallback: false)
-  set text(font: "STIX Two Text", size: 11pt, fallback: false)
+  let text_color = theme_config.text
+  set text(font: "STIX Two Text", size: 11pt, fallback: false, fill: text_color)
   set strong(delta: 200)
 
   // set font for math text
@@ -181,7 +268,7 @@
   }
 
   // setting for heading
-  show heading: heading_style
+  show heading: heading_style.with(chapter_color: theme_config.chapter_color)
 
   // setting for outline "#4682b4"
   show outline.entry: outline_style.with(outline_color: rgb("f36619"))
@@ -190,10 +277,11 @@
   show: theorem_env_initiate
 
   // setting reference style
-  show ref: set text(rgb("#395094"))
+  //let ref_color = theme_config.ref_color
+  show ref: set text(theme_config.ref_color)
 
   // setting link style
-  show link: set text(rgb("#395094"))
+  show link: set text(theme_config.ref_color)
 
   set math.mat(delim: "[")
   set math.vec(delim: "[")
