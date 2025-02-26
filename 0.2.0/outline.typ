@@ -1,4 +1,4 @@
-
+#import "icon_font.typ": icon
 // -----------------------------------------------------------------
 // Outline Style
 //
@@ -33,6 +33,7 @@
         columns: (indents.l1 + inset_left, auto),
         align: horizon,
         circle(
+          radius: 15.65pt,
           stroke: 0.1pt + outline_color,
           fill: outline_color.lighten(82%),
         )[
@@ -40,7 +41,7 @@
           #let chapter_number = if chapter_idx != none {
             chapter_idx
           } else {
-            ""
+            icon("boxdashed")
           }
           #text(size: 17pt, fill: outline_color.saturate(0%), chapter_number)
         ],
