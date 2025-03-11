@@ -1,26 +1,11 @@
-#import "@preview/cetz:0.3.2"
-#import "@preview/fletcher:0.5.5": diagram, node, edge
-
-#let theme_dict = (
-  "light": (
-    "background": luma(100%),
-    "text": luma(0%),
-  ),
-  "dark": (
-    "background": rgb("#292B2E"),
-    "text": luma(90%),
-  ),
-)
-
-#let with-theme-config(fn) = context {
-  let theme = state("math-notes-theme").get()
-  fn(theme_dict.at(theme))
-}
+#import "@preview/cetz:0.3.3"
+#import "@preview/fletcher:0.5.6": diagram, node, edge
+#import "theme.typ": with_theme_config
 
 // define commutative diagram
 #let commutative_diagram(math_content, ..args) = align(center)[
   #v(1em, weak: true)
-  #with-theme-config(theme_config => {
+  #with_theme_config(theme_config => {
     let stroke_color = theme_config.at("text")
     diagram(label-size: 0.8em, math_content, ..args, edge-stroke: stroke_color)
     v(1em, weak: true)
@@ -343,5 +328,18 @@
   edge(p_C, p_D, L, "->", bend: +35deg)
   edge(p_C, p_D, R, "<-", bend: -35deg)
 })
+
+#let cetz_canvas(..args) = {
+  set align(center)
+  v(1em)
+  with_theme_config(theme_config => {
+    cetz.canvas(
+      length: 1.2cm,
+      background: theme_config.at("background"),
+      ..args,
+    )
+  })
+}
+
 
 

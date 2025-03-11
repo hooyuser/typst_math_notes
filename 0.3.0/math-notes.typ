@@ -1,3 +1,4 @@
+#import "theme.typ": theme_dict, theme_state, with_theme_config
 #import "theorem-environment.typ": (
   theorem_env_initiate,
   theorem_env_generator,
@@ -7,50 +8,9 @@
 )
 
 #import "outline.typ": outline_style
+
 #import "@preview/in-dexter:0.7.0": make-index
 
-
-// -----------------------------------------------------------------
-// Theme
-// -----------------------------------------------------------------
-#let theme_dict = (
-  light: (
-    text: rgb("#000000"),
-    background: rgb("#ffffff"),
-    chapter_color: luma(30%),
-    ref_color: rgb("#395094"),
-    thm_env_color_dict: (
-      theorem: (front: rgb("#f19000"), background: rgb("#fdf8ea")),
-      proposition: (front: rgb("#30773c"), background: rgb("#ebf4ec")),
-      lemma: (front: rgb("#907a6b"), background: rgb("#f6f4f2")),
-      corollary: (front: rgb("#a74eb4"), background: rgb("#f9effb")),
-      definition: (front: rgb("#000069"), background: rgb("#f2f2f9")),
-    ),
-    example_env_color_dict: (
-      frame: rgb("#88d6d1"),
-      background: rgb("#f2fbf8"),
-      header: rgb("#2a7f7f"),
-    ),
-  ),
-  dark: (
-    text: luma(89.87%),
-    background: rgb("#292B2E"),
-    chapter_color: luma(74.51%),
-    ref_color: rgb("#8f9fcf"),
-    thm_env_color_dict: (
-      theorem: (front: rgb("#f19000"), background: rgb("#3d3220")),
-      proposition: (front: rgb("#8cd898"), background: rgb("#2a3b2a")),
-      lemma: (front: rgb("#d3a280"), background: rgb("#3b3731")),
-      corollary: (front: rgb("#a74eb4"), background: rgb("#3d2f3d")),
-      definition: (front: rgb("#6aaeed"), background: rgb("#2f2f3d")),
-    ),
-    example_env_color_dict: (
-      frame: rgb("#74b7b2"),
-      background: rgb("#323737"),
-      header: rgb("#7ed0d0"),
-    ),
-  ),
-)
 
 
 // -----------------------------------------------------------------
@@ -117,15 +77,11 @@
 // )
 
 
-#let with-theme-config(fn) = context {
-  let theme = state("math-notes-theme").get()
-  fn(theme_dict.at(theme))
-}
 
 
 // wrap with a figure as a temporary fix
 #let theorem_func(env_name, ..env_body) = figure(
-  with-theme-config(theme_config => {
+  with_theme_config(theme_config => {
     let color_dict = theme_config.at("thm_env_color_dict")
     let env_colors = color_dict.at(env_name)
     quote_style_theorem(env_name, env_colors, ..env_body)
@@ -151,7 +107,7 @@
 
 // Export example environment
 #let example = (..body) => figure(
-  with-theme-config(theme_config => {
+  with_theme_config(theme_config => {
     let (frame, background, header) = theme_config.at("example_env_color_dict")
     theorem_env_generator(
       "Example",
@@ -228,10 +184,10 @@
 // Math Notes Template
 // -----------------------------------------------------------------
 
-#let theme_state = state("math-notes-theme", none)
+
 
 #let math_notes(doc, title: "TITLE", title_font: "Noto Serif", theme: "light") = {
-  context theme_state.update(theme)
+  context theme_state.update(sys.inputs.at("notes-theme", default: theme)) // allow cli to override theme
   set text(fallback: false)
 
   let theme_config = theme_dict.at(theme)
@@ -271,7 +227,7 @@
   show heading: heading_style.with(chapter_color: theme_config.chapter_color)
 
   // setting for outline "#4682b4"
-  show outline.entry: outline_style.with(outline_color: rgb("f36619"))
+  show outline.entry: outline_style.with(color_dict: theme_config.outline_color_dict)
 
   // setting for theorem environment
   show: theorem_env_initiate

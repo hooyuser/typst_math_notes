@@ -8,7 +8,8 @@
 //     outline_color: rgb("f36619")
 //   )
 // -----------------------------------------------------------------
-#let outline_style(it, outline_color: black) = {
+#let outline_style(it, color_dict: (l1: black, l2: black, l3: luma(15%))) = {
+  let outline_color = color_dict.l1
   set text(font: "Noto Sans")
   show link: set text(black)
   let fill_line_color = luma(70%)
@@ -55,7 +56,7 @@
     v(-10pt, weak: true)
   } else if it.level == 2 {
     v(10pt, weak: true)
-    set text(size: 12pt, weight: 600)
+    set text(size: 12pt, weight: 600, fill: color_dict.l2)
     h(indents.l1 + extra_paddings.l2) // level2_padding as extra padding
     box(width: indents.l2, chapter_idx)
     header_text
@@ -71,7 +72,7 @@
   } else if it.level == 3 {
     v(8pt, weak: true)
     let is_first = chapter_idx.text.last() == "1"
-    set text(size: 9.5pt, weight: 400, fill: luma(15%))
+    set text(size: 9.5pt, weight: 400, fill: color_dict.l3)
 
     let vline_offset = indents.l1 + extra_paddings.l2 + 0.9em // 0.9em needs to fine-tuned for the vertical line
     let vline_y_padding = 0.2em

@@ -229,11 +229,11 @@
 }
 
 // #let (env_name, env_colors, ..env_body) = {
-    
+
 //       let header = upper(env_name.first()) + env_name.slice(1)
 //       //let env_colors = color_dict.at(env_name)
 //       let (front_color, background_color) = (env_colors.front, env_colors.background)
-     
+
 //       theorem_env_generator(
 //         header,
 //         env_class: "theorem",
@@ -273,28 +273,27 @@
 //     dict_from_pairs(theorem_envs)
 //   })
 // }
-// 
-// 
+//
+//
 
 
 // -----------------------------------------------------------------
 // Theorem Environment Presets
 // -----------------------------------------------------------------
 #let quote_style_theorem(env_name, env_colors, ..env_body) = {
-    
-      let header = upper(env_name.first()) + env_name.slice(1)
-      //let env_colors = color_dict.at(env_name)
-      let (front_color, background_color) = (env_colors.front, env_colors.background)
-     
-      theorem_env_generator(
-        header,
-        env_class: "theorem",
-        header_color: front_color,
-        block_func: quote_block(
-          stroke_color: front_color,
-          fill_color: background_color,
-        ),
-      )(..env_body)
+  let header = upper(env_name.first()) + env_name.slice(1)
+  //let env_colors = color_dict.at(env_name)
+  let (front_color, background_color) = (env_colors.front, env_colors.background)
+
+  theorem_env_generator(
+    header,
+    env_class: "theorem",
+    header_color: front_color,
+    block_func: quote_block(
+      stroke_color: front_color,
+      fill_color: background_color,
+    ),
+  )(..env_body)
 }
 
 
@@ -313,17 +312,40 @@
   show figure.where(kind: "thm-env-uncounted"): set align(start)
   show figure.where(kind: "thm-env-uncounted"): fig => fig.body
 
+
   // Define custom reference function
   show ref: it => {
     if it.element != none and it.element.func() == figure and it.element.kind == "thm-env-counted" {
       let supplement = if it.citation.supplement != none { it.citation.supplement } else { it.element.supplement }
       let data = query(selector(label("thm-env:number-func")).after(it.target)).first()
       let numberfunc = data.value
-      link(it.target, [#supplement #numberfunc(data.location())])
+      let number = numberfunc(data.location())
+      let display_content = [#supplement #number]
+      link(it.target, display_content)
+      
+      if "query" in sys.inputs {
+        if it.element.has("label") {
+          let label = it.element.label
+          state("label_dict").update(it => {
+            let (key, value) = (repr(label), (supplement.text, number))
+            if it == none {
+              (key: value)
+            } else {
+              it.insert(key, value) + it
+            }
+          })
+        }
+      }
     } else {
       it
     }
   }
 
   body
+
+  // Use `typst query main.typ '<thm-env:label-dict>' --pretty --input "query"="1" > label-dict.json` to export the label dictionary
+
+  if "query" in sys.inputs {
+    context [#metadata(state("label_dict").final()) <thm-env:label-dict>]
+  }
 }

@@ -7,4 +7,7 @@
   square_cd_element,
   functor_diagram_square_cd,
   adjunction_pair,
+  cetz_canvas
 )
+
+#import "theme.typ": with_theme_config
