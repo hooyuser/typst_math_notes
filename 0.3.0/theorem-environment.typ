@@ -196,37 +196,37 @@
 
 
 // Utility function to generate a dictionary from an array of pairs
-#let dict_from_pairs(pairs) = {
-  for pair in pairs {
-    assert(pair.len() == 2, message: "`from_pairs` accepts an array of pairs")
-    (pair.at(0): pair.at(1))
-  }
-}
+// #let dict_from_pairs(pairs) = {
+//   for pair in pairs {
+//     assert(pair.len() == 2, message: "`from_pairs` accepts an array of pairs")
+//     (pair.at(0): pair.at(1))
+//   }
+// }
 
 // Utility function to generate theorem environments from color dictionary
-#let gen_thm_envs(name_color_dict) = {
-  let theorem_envs = name_color_dict
-    .pairs()
-    .map(((env_name, env_colors)) => {
-      // capitalize the first letter of the environment name
-      let header = upper(env_name.first()) + env_name.slice(1)
-      let (front_color, background_color) = (env_colors.front, env_colors.background)
-      (
-        env_name,
-        theorem_env_generator(
-          header,
-          env_class: "theorem",
-          header_color: front_color,
-          block_func: quote_block(
-            stroke_color: front_color,
-            fill_color: background_color,
-          ),
-        ),
-      )
-    })
-  // convert list of pairs to dictionary to enable matching by environment name
-  dict_from_pairs(theorem_envs)
-}
+// #let gen_thm_envs(name_color_dict) = {
+//   let theorem_envs = name_color_dict
+//     .pairs()
+//     .map(((env_name, env_colors)) => {
+//       // capitalize the first letter of the environment name
+//       let header = upper(env_name.first()) + env_name.slice(1)
+//       let (front_color, background_color) = (env_colors.front, env_colors.background)
+//       (
+//         env_name,
+//         theorem_env_generator(
+//           header,
+//           env_class: "theorem",
+//           header_color: front_color,
+//           block_func: quote_block(
+//             stroke_color: front_color,
+//             fill_color: background_color,
+//           ),
+//         ),
+//       )
+//     })
+//   // convert list of pairs to dictionary to enable matching by environment name
+//   dict_from_pairs(theorem_envs)
+// }
 
 // #let (env_name, env_colors, ..env_body) = {
 
@@ -280,14 +280,14 @@
 // -----------------------------------------------------------------
 // Theorem Environment Presets
 // -----------------------------------------------------------------
-#let quote_style_theorem(env_name, env_colors, ..env_body) = {
-  let header = upper(env_name.first()) + env_name.slice(1)
+#let quote_style_theorem(env_class: "theorem", header, env_colors, ..env_body) = {
+  
   //let env_colors = color_dict.at(env_name)
   let (front_color, background_color) = (env_colors.front, env_colors.background)
 
   theorem_env_generator(
     header,
-    env_class: "theorem",
+    env_class: env_class,
     header_color: front_color,
     block_func: quote_block(
       stroke_color: front_color,

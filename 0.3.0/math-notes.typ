@@ -77,18 +77,19 @@
 // )
 
 
-
-
 // wrap with a figure as a temporary fix
-#let theorem_func(env_name, ..env_body) = figure(
-  with_theme_config(theme_config => {
-    let color_dict = theme_config.at("thm_env_color_dict")
-    let env_colors = color_dict.at(env_name)
-    quote_style_theorem(env_name, env_colors, ..env_body)
-  }),
-  kind: "thm-env-counted",
-  supplement: env_name,
-)
+#let theorem_func(env_name, ..env_body) = {
+  let header = upper(env_name.first()) + env_name.slice(1) // capitalize the first letter of the environment name
+  figure(
+    with_theme_config(theme_config => {
+      let color_dict = theme_config.at("thm_env_color_dict")
+      let env_colors = color_dict.at(env_name)
+      quote_style_theorem(header, env_colors, ..env_body)
+    }),
+    kind: "thm-env-counted",
+    supplement: header,
+  )
+}
 
 #let gen_theorem_func_from_name(env_name) = theorem_func.with(env_name)
 
@@ -120,7 +121,7 @@
     )(..body)
   }),
   kind: "thm-env-counted",
-  supplement: "example",
+  supplement: "Example",
 )
 
 
