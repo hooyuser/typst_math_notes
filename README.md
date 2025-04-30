@@ -3,7 +3,7 @@
 Example
 
 ```typ
-#import "@local/math-notes:0.2.0": *
+#import "@local/math-notes:0.3.0": *
 
 #show: math_notes.with(
   title: [ELLIPTIC CURVES],
