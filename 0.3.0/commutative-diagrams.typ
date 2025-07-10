@@ -1,5 +1,5 @@
-#import "@preview/cetz:0.3.4"
-#import "@preview/fletcher:0.5.7": diagram, node, edge
+#import "@preview/cetz:0.4.0"
+#import "@preview/fletcher:0.5.8": diagram, node, edge
 #import "theme.typ": with_theme_config
 
 // define commutative diagram
