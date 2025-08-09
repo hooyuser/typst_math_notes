@@ -4,16 +4,16 @@
 // -----------------------------------------------------------------
 #let theme_dict = (
   light: (
-    text: rgb("#000000"),
-    background: rgb("#ffffff"),
-    chapter_color: luma(30%),
+    text: oklch(18%, 0, 0deg),
+    background: oklch(98%, 0, 95deg),
+    chapter_color: oklch(45%, 0, 0deg),
     ref_color: rgb("#395094"),
     thm_env_color_dict: (
       theorem: (front: rgb("#f19000"), background: rgb("#fdf8ea")),
-      proposition: (front: rgb("#30773c"), background: rgb("#ebf4ec")),
+      proposition: (front: oklch(57%, 0.14, 147deg), background: oklch(95.8%, 0.01, 147deg)),
       lemma: (front: rgb("#907a6b"), background: rgb("#f6f4f2")),
       corollary: (front: rgb("#a74eb4"), background: rgb("#f9effb")),
-      definition: (front: rgb("#000069"), background: rgb("#f2f2f9")),
+      definition: (front: oklch(45.68%, 0.14, 263.66deg), background: rgb("#f2f2f9")),
     ),
     example_env_color_dict: (
       frame: rgb("#88d6d1"),

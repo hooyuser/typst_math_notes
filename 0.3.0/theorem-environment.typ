@@ -189,7 +189,15 @@
   block_func: proof_block(),
 ) = content => proof_env(
   content,
-  prefix: text(style: "oblique", [#title. ]),
+  prefix: text(
+    style: "normal",
+    size: 10pt,
+    weight: 600,
+    fill: oklch(28%, 0, 0deg, 80%),
+    tracking: 0.02em,
+    font: "Inter 18pt",
+    [#h(-0.77em)#text(size: 7pt, baseline: -1.05pt, fill: oklch(28%, 0, 0deg, 70%), "▶︎")#h(0.15em)#title.#h(0.05em)],
+  ),
   suffix: suffix,
   block_func: block_func,
 )
@@ -281,7 +289,6 @@
 // Theorem Environment Presets
 // -----------------------------------------------------------------
 #let quote_style_theorem(env_class: "theorem", header, env_colors, ..env_body) = {
-  
   //let env_colors = color_dict.at(env_name)
   let (front_color, background_color) = (env_colors.front, env_colors.background)
 
@@ -322,7 +329,7 @@
       let number = numberfunc(data.location())
       let display_content = [#supplement #number]
       link(it.target, display_content)
-      
+
       if "query" in sys.inputs {
         if it.element.has("label") {
           let label = it.element.label
