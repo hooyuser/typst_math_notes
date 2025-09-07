@@ -1,10 +1,10 @@
 #import "theme.typ": theme_dict, theme_state, with_theme_config
 #import "theorem-environment.typ": (
-  theorem_env_initiate,
-  theorem_env_generator,
   proof_env_generator,
   quote_style_theorem,
   rounded_block,
+  theorem_env_generator,
+  theorem_env_initiate,
 )
 
 #import "outline.typ": outline_style
@@ -16,7 +16,7 @@
 // -----------------------------------------------------------------
 // Heading Style
 // -----------------------------------------------------------------
-#let heading_style(it, chapter_color: luma(100%)) = {
+#let heading_style(it, chapter_color: luma(0%)) = {
   set block(above: 1.4em, below: 1em)
 
   if it.numbering == none {
@@ -25,15 +25,16 @@
       for ele in body.children {
         if ele.func() == metadata {
           if ele.value == "index" {
-            text(weight: 700, 28pt, font: "Lato", ligatures: false)[
+            return text(weight: 700, 28pt, font: "Lato", ligatures: false)[
               #it.body #v(2em, weak: true)
             ]
           }
         }
       }
-    } else {
-      it
     }
+    text(weight: 700, 28pt, font: "Lato", ligatures: false)[
+      #it.body #v(1em, weak: true)
+    ]
   } else if it.level == 1 {
     set par(first-line-indent: 0em)
     text(weight: 700, 22pt, tracking: 0.5pt, font: "Lato", fill: chapter_color)[
@@ -131,8 +132,8 @@
 #let remark = proof_env_generator(
   title: "Remark",
   suffix: [#text(fill: luma(40%), baseline: -0.05em)[#box(
-        width: 0pt,
-      )#h(1fr)#sym.wj#sym.space.nobreak$square.filled#h(-0.09em)$]],
+      width: 0pt,
+    )#h(1fr)#sym.wj#sym.space.nobreak$square.filled#h(-0.09em)$]],
 )
 
 
@@ -218,6 +219,13 @@
 
   // guarantee that equations take the full width of the page
   show enum: it => {
+    show math.equation.where(block: true): eq => {
+      block(width: 100%, inset: 0pt, align(center, eq))
+    }
+    it
+  }
+
+  show list: it => {
     show math.equation.where(block: true): eq => {
       block(width: 100%, inset: 0pt, align(center, eq))
     }
