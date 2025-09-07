@@ -1,10 +1,6 @@
 #import "theme.typ": theme_dict, theme_state, with_theme_config
 #import "theorem-environment.typ": (
-  proof_env_generator,
-  quote_style_theorem,
-  rounded_block,
-  theorem_env_generator,
-  theorem_env_initiate,
+  proof_env_generator, quote_style_theorem, rounded_block, theorem_env_generator, theorem_env_initiate,
 )
 
 #import "outline.typ": outline_style
@@ -270,18 +266,30 @@
   // Define state for header and footer
   // Set Header and Footer
   let chapter_dict = state("chapter_dict", (:))
-  let current_chapter = state("current_chapterg", "")
+  let current_chapter = state("current_chapter", "")
   let current_section = state("current_section", "")
 
 
   show heading.where(level: 1): curr-heading => (
-    context {
+    {
       curr-heading // preserve heading style, only add side effect
       let chapter_page_number = str(here().page())
+      let current_numbering = curr-heading.numbering
+
       chapter_dict.update(headings => {
         // if one page have more than one chapter, only keep the first one
         if chapter_page_number not in headings {
-          headings.insert(chapter_page_number, curr-heading.body)
+          let chapter_num = if headings.len() == 0 {
+            0
+          } else {
+            let last_heading_values = headings.values().last()
+            if current_numbering != last_heading_values.at(1) {
+              0
+            } else {
+              last_heading_values.at(0)
+            }
+          }
+          headings.insert(chapter_page_number, (chapter_num + 1, current_numbering, curr-heading.body))
         }
         headings
       })
@@ -356,19 +364,29 @@
         // if the current page is not the first page of a chapter
 
         // get the chapter number before the current location
-        let chapter_number = counter(chapters).display()
-        let chapter_name = current_chapter.get()
+        // let chapter_number = counter(chapters).display()
+        // let chapter_name = current_chapter.get()
+        let (chapter_num, chapter_numbering, chapter_name) = current_chapter.get()
+        if chapter_numbering == none {
+          return
+        }
+        let chapter_number = numbering(chapter_numbering, chapter_num)
 
         let (section_number, section_name) = if first_line_is_new_section and after_here_section != none {
           // count all sections before the first section after the current location (including the the first section after the current location)
-          let section_number = counter(heading).at(after_here_section_loc).map(str).join(".")
+          let section_num = counter(heading).at(after_here_section_loc).at(1)
+          let section_number = numbering(chapter_numbering, chapter_num, section_num)
           let section_name = after_here_section.body
           (section_number, section_name)
+        } else if counter(chapters.or(sections)).get().len() == 1 {
+          // if no section before current location
+          ("", "")
         } else {
           // count all sections before the current location
-          let section_counter = counter(chapters.or(sections)).display()
+          let section_num = counter(chapters.or(sections)).get().at(1)
+          let section_number = numbering(chapter_numbering, chapter_num, section_num)
           let section_name = current_section.get()
-          (section_counter, section_name)
+          (section_number, section_name)
         }
         [*#chapter_number #upper(chapter_name)* #h(1fr) #smallcaps[#section_number #section_name]]
       }
