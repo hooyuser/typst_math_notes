@@ -5,7 +5,7 @@
 
 #import "outline.typ": outline_style
 
-#import "@preview/in-dexter:0.7.0": make-index
+#import "@preview/in-dexter:0.7.2": make-index
 
 
 
@@ -57,22 +57,9 @@
 // Theorem Environments
 // -----------------------------------------------------------------
 
-// Define theorem environments
-// #let thm_env_color_dict_bright = (
-//   theorem: (front: rgb("#f19000"), background: rgb("#fdf8ea")),
-//   proposition: (front: rgb("#30773c"), background: rgb("#ebf4ec")),
-//   lemma: (front: rgb("#907a6b"), background: rgb("#f6f4f2")),
-//   corollary: (front: rgb("#a74eb4"), background: rgb("#f9effb")),
-//   definition: (front: rgb("#000069"), background: rgb("#f2f2f9")),
-// )
-// #let thm_env_color_dict_dark = (
-//   theorem: (front: rgb("#f19000"), background: rgb("#3d3220")),
-//   proposition: (front: rgb("#30773c"), background: rgb("#2a3b2a")),
-//   lemma: (front: rgb("#907a6b"), background: rgb("#3b3731")),
-//   corollary: (front: rgb("#a74eb4"), background: rgb("#3d2f3d")),
-//   definition: (front: rgb("#000069"), background: rgb("#2f2f3d")),
-// )
 
+#let current-env = state("math-notes.current-env", none)
+#let current-env-name() = current-env.get()
 
 // wrap with a figure as a temporary fix
 #let theorem_func(env_name, ..env_body) = {
@@ -81,7 +68,9 @@
     with_theme_config(theme_config => {
       let color_dict = theme_config.at("thm_env_color_dict")
       let env_colors = color_dict.at(env_name)
+      current-env.update(env_name)  // set state to the current environment name, so we know which environment we are in currently
       quote_style_theorem(header, env_colors, ..env_body)
+      current-env.update("none")  // exit the current theorem environment and reset the state
     }),
     kind: "thm-env-counted",
     supplement: header,
@@ -96,17 +85,11 @@
 }
 
 
-// Define theorem environment for example
-#let example_env_colors = (
-  frame: rgb("#88d6d1"),
-  background: rgb("#f2fbf8"),
-  header: rgb("#2a7f7f"),
-)
-
 // Export example environment
 #let example = (..body) => figure(
   with_theme_config(theme_config => {
     let (frame, background, header) = theme_config.at("example_env_color_dict")
+    current-env.update("example")  // set state to the current environment name, so we know which environment we are in currently
     theorem_env_generator(
       "Example",
       env_class: "example",
@@ -116,11 +99,11 @@
         fill_color: background,
       ),
     )(..body)
+    current-env.update("none")  // exit the current theorem environment and reset the state
   }),
   kind: "thm-env-counted",
   supplement: "Example",
 )
-
 
 
 // Theorem environment for proof and remark
@@ -155,25 +138,31 @@
 
   #set heading(numbering: none)
 
+  #let gen_index = make-index.with(
+    use-page-counter: true,
+    sort-order: upper,
+    section-title: (letter, counter) => {
+      text(weight: 700, 22pt, tracking: 0.5pt, font: "Lato", fill: luma(22%))[
+        #h(-0.03em) #letter #v(1.1em, weak: true)
+      ]
+    },
+    section-body: (letter, counter, body) => {
+      body
+      v(2em)
+    },
+  )
+
   = Notation Index #metadata("index")
 
   #columns(3)[
-    #make-index(
-      indexes: "Math",
-      use-page-counter: true,
-      sort-order: upper,
-    )
+    #gen_index(indexes: "Math")
   ]
 
   #pagebreak()
   = Subject Index #metadata("index")
 
   #columns(2)[
-    #make-index(
-      indexes: "Default",
-      use-page-counter: true,
-      sort-order: upper,
-    )
+    #gen_index(indexes: "Default")
   ]
 ]
 

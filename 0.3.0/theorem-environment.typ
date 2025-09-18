@@ -5,9 +5,14 @@
 #set par(justify: true)
 
 // Set font for theorem environment prefix (e.g. "Theorem 1.1.2")
-#let thm_env_head_sans(name) = [#text(font: "Latin Modern Sans", weight: 700)[#name]]
+#let thm_env_head_sans(name, weight: 700) = [#text(font: "Latin Modern Sans", weight: weight)[#name]]
 // Set font for theorem environment titles (e.g. "Fermat Last Theorem")
-#let thm_env_name_sans(name) = [#text(font: "Noto Sans Display", weight: 500, size: 10.5pt)[#name]]
+#let thm_env_name_sans(name, weight: 500, size: 10.5pt) = [#text(
+  font: "Noto Sans Display",
+  weight: weight,
+  size: size,
+)[#name]]
+
 
 
 
@@ -22,12 +27,14 @@
   fill_color: gray,
   bar_width: 0.25em,
   inset: 1em,
+  radius: (bottom-left: 0em, right: 0em),
 ) = block.with(
   stroke: (left: bar_width + stroke_color),
   fill: fill_color,
   outset: (left: -0.5 * bar_width),
   inset: (x: bar_width + inset, y: inset),
   width: 100%,
+  radius: radius,
 )
 
 // Block with rounded corners
@@ -82,9 +89,10 @@
     #set par(first-line-indent: 0pt)
     #let theorem_prefix = thm_env_head_sans(env_name)
     #let theorem_number = thm_env_head_sans(context (counter.display)())
-    #let theorem_title = thm_env_name_sans(title)
+    #let theorem_title = thm_env_name_sans(title, size: 11pt)
     #text(
       fill: header_color,
+      size: 11.5pt,
       theorem_prefix + h(0.15em) + theorem_number + h(0.3em) + theorem_title + h(1fr),
     )
 
@@ -201,88 +209,6 @@
   suffix: suffix,
   block_func: block_func,
 )
-
-
-// Utility function to generate a dictionary from an array of pairs
-// #let dict_from_pairs(pairs) = {
-//   for pair in pairs {
-//     assert(pair.len() == 2, message: "`from_pairs` accepts an array of pairs")
-//     (pair.at(0): pair.at(1))
-//   }
-// }
-
-// Utility function to generate theorem environments from color dictionary
-// #let gen_thm_envs(name_color_dict) = {
-//   let theorem_envs = name_color_dict
-//     .pairs()
-//     .map(((env_name, env_colors)) => {
-//       // capitalize the first letter of the environment name
-//       let header = upper(env_name.first()) + env_name.slice(1)
-//       let (front_color, background_color) = (env_colors.front, env_colors.background)
-//       (
-//         env_name,
-//         theorem_env_generator(
-//           header,
-//           env_class: "theorem",
-//           header_color: front_color,
-//           block_func: quote_block(
-//             stroke_color: front_color,
-//             fill_color: background_color,
-//           ),
-//         ),
-//       )
-//     })
-//   // convert list of pairs to dictionary to enable matching by environment name
-//   dict_from_pairs(theorem_envs)
-// }
-
-// #let (env_name, env_colors, ..env_body) = {
-
-//       let header = upper(env_name.first()) + env_name.slice(1)
-//       //let env_colors = color_dict.at(env_name)
-//       let (front_color, background_color) = (env_colors.front, env_colors.background)
-
-//       theorem_env_generator(
-//         header,
-//         env_class: "theorem",
-//         header_color: front_color,
-//         block_func: quote_block(
-//           stroke_color: front_color,
-//           fill_color: background_color,
-//         ),
-//       )(..env_body)
-// }
-
-
-
-
-// #let gen_thm_envs_from(color_dict_context) = {
-//   color_dict_context(name_color_dict => {
-//     let theorem_envs = name_color_dict
-//       .pairs()
-//       .map(((env_name, env_colors)) => {
-//         // capitalize the first letter of the environment name
-//         let header = upper(env_name.first()) + env_name.slice(1)
-//         let (front_color, background_color) = (env_colors.front, env_colors.background)
-//         (
-//           env_name,
-//           theorem_env_generator(
-//             header,
-//             env_class: "theorem",
-//             header_color: front_color,
-//             block_func: quote_block(
-//               stroke_color: front_color,
-//               fill_color: background_color,
-//             ),
-//           ),
-//         )
-//       })
-//     // convert list of pairs to dictionary to enable matching by environment name
-//     dict_from_pairs(theorem_envs)
-//   })
-// }
-//
-//
 
 
 // -----------------------------------------------------------------

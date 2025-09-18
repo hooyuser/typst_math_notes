@@ -1,4 +1,4 @@
-#import "math-notes.typ": math_notes, definition, proposition, lemma, theorem, corollary, example, proof, remark
+#import "math-notes.typ": math_notes, definition, proposition, lemma, theorem, corollary, example, proof, remark, current-env-name
 
 #import "commutative-diagrams.typ": (
   commutative_diagram,
