@@ -68,9 +68,9 @@
     with_theme_config(theme_config => {
       let color_dict = theme_config.at("thm_env_color_dict")
       let env_colors = color_dict.at(env_name)
-      current-env.update(env_name)  // set state to the current environment name, so we know which environment we are in currently
+      current-env.update(env_name) // set state to the current environment name, so we know which environment we are in currently
       quote_style_theorem(header, env_colors, ..env_body)
-      current-env.update("none")  // exit the current theorem environment and reset the state
+      current-env.update("none") // exit the current theorem environment and reset the state
     }),
     kind: "thm-env-counted",
     supplement: header,
@@ -89,7 +89,7 @@
 #let example = (..body) => figure(
   with_theme_config(theme_config => {
     let (frame, background, header) = theme_config.at("example_env_color_dict")
-    current-env.update("example")  // set state to the current environment name, so we know which environment we are in currently
+    current-env.update("example") // set state to the current environment name, so we know which environment we are in currently
     theorem_env_generator(
       "Example",
       env_class: "example",
@@ -99,7 +99,7 @@
         fill_color: background,
       ),
     )(..body)
-    current-env.update("none")  // exit the current theorem environment and reset the state
+    current-env.update("none") // exit the current theorem environment and reset the state
   }),
   kind: "thm-env-counted",
   supplement: "Example",
@@ -179,7 +179,11 @@
 
   let theme_config = theme_dict.at(theme)
   let page_background_color = theme_config.background
-  set page(margin: 1.9cm, fill: page_background_color)
+  set page(
+    margin: 1.9cm,
+    fill: page_background_color,
+    header-ascent: 40% + 0pt,
+  )
 
 
   set heading(numbering: "1.1")
@@ -377,7 +381,18 @@
           let section_name = current_section.get()
           (section_number, section_name)
         }
-        [*#chapter_number #upper(chapter_name)* #h(1fr) #smallcaps[#section_number #section_name]]
+        [
+          #set text(font: "Noto Sans", fill: luma(30%))
+          #h(-2.1em)
+          #smallcaps[*#chapter_number | #chapter_name*] #h(1fr)#set text(
+            font: "Noto Sans",
+            size: 10pt,
+            weight: 600,
+            fill: luma(30%),
+          )
+          #section_number | #section_name
+          #h(-2.1em)
+        ]
       }
     },
 
@@ -427,25 +442,57 @@
     //   [*#chapter_number #upper(chapter_name)* #h(1fr) #smallcaps[#section_number #section_name]]
 
     // },
-    // footer: context {
-    //   let page_number = counter(page).get().first()
+    footer: context {
+      let page_number = counter(page).get().first()
+      let total_page_number = counter(page).final().first()
+      let ratio = (page_number - 1) / total_page_number
+      set align(right)
+      stack(
+        dir: ltr,
+        move(dy: 0.8em, line(
+          length: ratio * 100%,
+          stroke: (
+            paint: luma(70%),
+            cap: "round",
+            thickness: 1pt,
+          ),
+        )),
+        move(dy: 0.8em, line(
+          length: (1 - ratio) * 100%,
+          stroke: (
+            paint: luma(70%),
+            cap: "round",
+            thickness: 1pt,
+            dash: (0.45em, 0.3em),
+          ),
+        )),
+        h(1em),
+        box(height: 1.6em, width: 1.6em, fill: luma(65%), radius: 0.4em)[
+          #set align(center + horizon)
+          #set text(font: "Noto Sans", size: 8pt, weight: 600, fill: luma(99%))
+          #page_number
+        ],
+        h(-2.5em),
+      )
 
-    //   if calc.odd(page_number) {
-    //     set align(left)
-    //     // counter(page).display("i")
-    //     circle(radius: auto, fill: orange)[
-    //       #set align(center + horizon)
-    //       #page_number
-    //     ]
-    //   } else {
-    //     set align(right)
-    //     circle(radius: auto, fill: orange)[
-    //       #set align(center + horizon)
 
-    //       #page_number
-    //     ]
-    //   }
-    // },
+      // if calc.odd(page_number) {
+      //   set align(right)
+      //   // counter(page).display("i")
+      //   circle(radius: auto, fill: luma(50%))[
+      //     #set align(center + horizon)
+      //     #set text(font: "Noto Sans", size: 10pt, weight: 600, fill: luma(95%))
+      //     #page_number
+      //   ]
+      // } else {
+      //   set align(right)
+      //   circle(radius: auto, fill: luma(50%))[
+      //     #set align(center + horizon)
+      //     #set text(font: "Noto Sans", size: 10pt, weight: 600, fill: luma(95%))
+      //     #page_number
+      //   ]
+      // }
+    },
   )
 
   // Start counting pages from here
