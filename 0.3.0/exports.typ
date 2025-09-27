@@ -11,3 +11,7 @@
 )
 
 #import "theme.typ": with_theme_config
+
+#import "badge.typ": typebadge
+
+#import "shorthand.typ": *

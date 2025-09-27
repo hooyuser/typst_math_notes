@@ -142,13 +142,27 @@
     use-page-counter: true,
     sort-order: upper,
     section-title: (letter, counter) => {
-      text(weight: 700, 22pt, tracking: 0.5pt, font: "Lato", fill: luma(22%))[
-        #h(-0.03em) #letter #v(1.1em, weak: true)
-      ]
+      set align(center)
+      block(
+        fill: orange.desaturate(79%),
+        width: 100%,
+        inset: (left: 0.5em, right: 0.5em, y: 0.45em),
+        outset: (x: 0.2em),
+        radius: 0.15em,
+        text(
+          weight: 800,
+          14pt,
+          tracking: 0.5pt,
+          font: "Lato",
+          fill: rgb("#ff6f00"),
+        )[
+          #letter
+        ],
+      )
     },
     section-body: (letter, counter, body) => {
       body
-      v(2em)
+      v(1em)
     },
   )
 
@@ -161,7 +175,7 @@
   #pagebreak()
   = Subject Index #metadata("index")
 
-  #columns(2, gutter: 15% + 0pt)[
+  #columns(2, gutter: 8% + 0pt)[
     #gen_index(indexes: "Default")
   ]
 ]
@@ -239,6 +253,7 @@
 
   set math.mat(delim: "[")
   set math.vec(delim: "[")
+  set math.cases(gap: 0% + 1em)
 
 
   // Title Page
