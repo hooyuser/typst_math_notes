@@ -1,5 +1,5 @@
 #import "@preview/cetz:0.3.4"
-#import "@preview/fletcher:0.5.8": diagram, node, edge
+#import "@preview/fletcher:0.5.8": diagram, edge, node
 #import "theme.typ": with_theme_config
 
 // define commutative diagram
@@ -111,6 +111,7 @@
   contravariant: false,
   g_arrow: "->",
   Fg_arrow: "->",
+  ..args,
 ) = commutative_diagram(
   functor_diagram_info(
     F: F,
@@ -129,6 +130,7 @@
     g_arrow: g_arrow,
     Fg_arrow: Fg_arrow,
   ),
+  ..args,
 )
 
 #let square_cd_info(
@@ -181,7 +183,8 @@
   Gf_arrow: "->",
   theta_l_arrow: "->",
   theta_r_arrow: "->",
-) = commutative_diagram({
+  ..args,
+) = commutative_diagram(
   square_cd_info(
     A11: A11,
     A12: A12,
@@ -195,8 +198,9 @@
     Gf_arrow: Gf_arrow,
     theta_l_arrow: theta_l_arrow,
     theta_r_arrow: theta_r_arrow,
-  )
-})
+  ),
+  ..args,
+)
 
 #let square_cd_element(
   A11: ($$, $$),
