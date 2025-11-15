@@ -110,7 +110,7 @@
 #let proof = proof_env_generator(title: "Proof")
 #let remark = proof_env_generator(
   title: "Remark",
-  suffix: [#text(fill: luma(40%), baseline: -0.05em)[#box(
+  suffix: [#text(fill: oklch(28%, 0, 0deg, 70%), baseline: -0.05em)[#box(
       width: 0pt,
     )#h(1fr)#sym.wj#sym.space.nobreak$square.filled#h(-0.09em)$]],
 )
@@ -216,8 +216,8 @@
       (name: "Computer Modern Symbol", covers: regex("[𝒜ℬ𝒞𝒟ℰℱ𝒢ℋℐ𝒥𝒦ℒℳ𝒩-𝒬ℛ𝒮-𝒵]")),
       "New Computer Modern Math",
     ),
-    weight: 450,
-    stylistic-set: 1,
+    weight: 450, // default weight is 450, just to be explicit here
+    features: ("cv01",), // enable wide empty set symbol
     fallback: false,
   )
   show math.equation: set block(below: 8pt, above: 9pt)
