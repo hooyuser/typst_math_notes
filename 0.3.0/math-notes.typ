@@ -407,13 +407,13 @@
         [
           #set text(font: "Noto Sans", fill: luma(45%))
           #h(-2.1em)
-          #smallcaps[*#chapter_number | #chapter_name*] #h(1fr)#set text(
+          #smallcaps[*#chapter_number #text(baseline: -0.07em)[|] #chapter_name*] #h(1fr)#set text(
             font: "Noto Sans",
             size: 10pt,
             weight: 600,
             fill: luma(45%),
           )
-          #section_number | #section_name
+          #section_number #text(baseline: -0.07em)[|] #section_name
           #h(-2.1em)
         ]
       }
