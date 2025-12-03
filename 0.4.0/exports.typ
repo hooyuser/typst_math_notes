@@ -14,4 +14,8 @@
 
 #import "badge.typ": typebadge
 
-#import "shorthand.typ": *
+#import "defs.typ": *
+
+#import "table.typ": simple-table
+
+#import "index-page.typ": index, index_math
