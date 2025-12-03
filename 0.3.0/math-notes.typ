@@ -70,7 +70,7 @@
       let env_colors = color_dict.at(env_name)
       current-env.update(env_name) // set state to the current environment name, so we know which environment we are in currently
       quote_style_theorem(header, env_colors, ..env_body)
-      current-env.update("none") // exit the current theorem environment and reset the state
+      current-env.update(none) // exit the current theorem environment and reset the state
     }),
     kind: "thm-env-counted",
     supplement: header,
@@ -99,7 +99,7 @@
         fill_color: background,
       ),
     )(..body)
-    current-env.update("none") // exit the current theorem environment and reset the state
+    current-env.update(none) // exit the current theorem environment and reset the state
   }),
   kind: "thm-env-counted",
   supplement: "Example",
