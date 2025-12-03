@@ -1,0 +1,7 @@
+[package]
+name = "math-notes"
+version = "0.4.0"
+entrypoint = "exports.typ"
+authors = ["hooyuser"]
+license = "GPL-3.0-only"
+description = "A template for math notes"

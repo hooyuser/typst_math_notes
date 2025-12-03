@@ -1,0 +1,20 @@
+// Shorthand Notations for Common Categories
+#let Set = math.op($sans("Set")$)
+#let Top = math.op($sans("Top")$)
+#let Grp = math.op($sans("Grp")$)
+#let FinGrp = math.op($sans("FinGrp")$)
+#let Ab = math.op($sans("Ab")$)
+#let FinAb = math.op($sans("FinAb")$)
+#let TopGrp = math.op($sans("TopGrp")$)
+#let LCHGrp = math.op($sans("LCHGrp")$)
+#let LCA = math.op($sans("LCA")$)  // locally compact Hausdorff abelian groups
+#let Vect(k) = math.op($#k#h(0.1em)sans("-Vect")$)
+#let FinVect(k) = math.op($#k#h(0.1em)sans("-FinVect")$)
+#let Mod(k) = math.op($#k#h(0.1em)sans("-Mod")$)
+#let CHilb = math.op($CC#h(0.07em)sans("-Hilb")$)  // Common Definitions of Morphisms in Hilb: Bounded Linear Maps / All Linear Maps / Short Linear Maps / Isometric Isomorphisms, Here We Use Bounded Linear Maps
+#let Fld = math.op($sans("Fld")$)
+#let Ring = math.op($sans("Ring")$)
+#let CRing = math.op($sans("CRing")$)
+#let TopRing = math.op($sans("TopRing")$)
+#let Sh(C, X) = $op(sans("Sh")_(#C))(#(X))$
+#let PSh(C, X) = $op(sans("PSh")_(#C))(#(X))$
