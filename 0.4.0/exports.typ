@@ -1,13 +1,10 @@
-#import "math-notes.typ": math_notes, definition, proposition, lemma, theorem, corollary, example, proof, remark, current-env-name
+#import "math-notes.typ": (
+  corollary, current-env-name, definition, example, lemma, math_notes, proof, proposition, remark, theorem,
+)
 
 #import "commutative-diagrams.typ": (
-  commutative_diagram,
-  functor_diagram,
-  square_cd,
+  adjunction_pair, cetz_canvas, commutative_diagram, functor_diagram, functor_diagram_square_cd, square_cd,
   square_cd_element,
-  functor_diagram_square_cd,
-  adjunction_pair,
-  cetz_canvas
 )
 
 #import "theme.typ": with_theme_config

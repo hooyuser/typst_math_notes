@@ -9,11 +9,31 @@
     chapter_color: oklch(45%, 0, 0deg),
     ref_color: rgb("#395094"),
     thm_env_color_dict: (
-      theorem: (front: rgb("#f19000"), background: rgb("#fdf8ea")),
-      proposition: (front: oklch(57%, 0.14, 147deg), background: oklch(95.8%, 0.01, 147deg)),
-      lemma: (front: rgb("#907a6b"), background: rgb("#f6f4f2")),
-      corollary: (front: rgb("#a74eb4"), background: rgb("#f9effb")),
-      definition: (front: oklch(45.68%, 0.14, 263.66deg), background: rgb("#f2f2f9")),
+      theorem: (
+        front: oklch(73.91%, 0.167, 64.39deg),
+        secondary: oklch(93.74%, 0.10, 66.96deg, 80%),
+        background: rgb("#fdf8ea"),
+      ),
+      proposition: (
+        front: oklch(57%, 0.14, 147deg),
+        secondary: oklch(91.09%, 0.047, 149.33deg, 80%),
+        background: oklch(95.8%, 0.01, 147deg),
+      ),
+      lemma: (
+        front: oklch(59.58%, 0.035, 56.23deg),
+        secondary: oklch(90.99%, 0.011, 56.68deg, 80%),
+        background: rgb("#f6f4f2"),
+      ),
+      corollary: (
+        front: oklch(57.53%, 0.174, 322.39deg),
+        secondary: oklch(91.86%, 0.063, 322.15deg, 80%),
+        background: rgb("#f9effb"),
+      ),
+      definition: (
+        front: oklch(45.68%, 0.14, 263.66deg),
+        secondary: oklch(91.74%, 0.039, 265.29deg, 80%),
+        background: rgb("#f2f2f9"),
+      ),
     ),
     example_env_color_dict: (
       frame: rgb("#88d6d1"),

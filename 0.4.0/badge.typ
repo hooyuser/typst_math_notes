@@ -61,24 +61,27 @@
   let left-height = measure(left-text).height
   let right-height = measure(right-text).height
   let total-height = calc.max(left-height, right-height) + inset * 2
-  stack(
-    dir: ltr,
-    box(
-      stroke: (rest: color, right: rgb(0, 0, 0, 0)),
-      radius: (left: 50pt), // Pill/capsule shape
-      inset: (left: 5pt, y: 4pt), // Generous horizontal, moderate vertical padding
-      baseline: 25%, // Center with surrounding text
-      left-text,
-    ),
-
-    badge-triangle(total-height, color, x_end: triangle-width),
-    box(
-      stroke: color,
-      fill: color,
-      radius: (right: 50pt), // Pill/capsule shape
-      inset: (right: 5pt, y: 4pt), // Generous horizontal, moderate vertical padding
-      baseline: 25%, // Center with surrounding text
-      right-text,
+  box(
+    inset: (top: 0em, bottom: -0.2em),
+    // stroke: 0.5pt,
+    stack(
+      dir: ltr,
+      box(
+        stroke: (rest: color, right: none),
+        radius: (left: 50pt), // Pill/capsule shape
+        inset: (left: 5pt, y: 4pt), // Generous horizontal, moderate vertical padding
+        baseline: 25%, // Center with surrounding text
+        left-text,
+      ),
+      badge-triangle(total-height, color, x_end: triangle-width),
+      box(
+        stroke: color,
+        fill: color,
+        radius: (right: 50pt), // Pill/capsule shape
+        inset: (right: 5pt, y: 4pt), // Generous horizontal, moderate vertical padding
+        baseline: 25%, // Center with surrounding text
+        right-text,
+      ),
     ),
   )
 }
@@ -107,7 +110,7 @@
       }
     }
   }
-  //result.push(hide($display(in_(()))$))
+
   result.join()
 }
 
@@ -119,5 +122,5 @@
   } else {
     theme.at("thm_env_color_dict").at(thm-env).at("front").desaturate(20%)
   }
-  type_badge_internal(rounded_badge_slanted.with(color: front-color), ..args)
+  type_badge_internal(rounded_badge_slanted.with(color: front-color.lighten(20%).saturate(10%)), ..args)
 })

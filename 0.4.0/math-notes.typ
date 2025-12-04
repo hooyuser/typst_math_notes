@@ -4,53 +4,11 @@
 )
 
 #import "outline.typ": outline_style
+#import "heading.typ": heading_style
 
 #import "@preview/in-dexter:0.7.2": make-index
 
 
-
-// -----------------------------------------------------------------
-// Heading Style
-// -----------------------------------------------------------------
-#let heading_style(it, chapter_color: luma(0%)) = {
-  set block(above: 1.4em, below: 1em)
-
-  if it.numbering == none {
-    let body = it.body
-    if body.has("children") {
-      for ele in body.children {
-        if ele.func() == metadata {
-          if ele.value == "index" {
-            return text(weight: 700, 28pt, font: "Lato", ligatures: false)[
-              #it.body #v(2em, weak: true)
-            ]
-          }
-        }
-      }
-    }
-    text(weight: 700, 28pt, font: "Lato", ligatures: false)[
-      #it.body #v(1em, weak: true)
-    ]
-  } else if it.level == 1 {
-    set par(first-line-indent: 0em)
-    text(weight: 700, 22pt, tracking: 0.5pt, font: "Lato", fill: chapter_color)[
-      #v(2em)
-      Chapter #counter(heading).display(it.numbering)#v(1.1em, weak: true)
-    ]
-    text(weight: 700, 28pt, font: "Lato", ligatures: false)[
-      #it.body #v(2em, weak: true)
-    ]
-  } else if it.level == 2 {
-    set text(16pt, weight: 700, font: "New Computer Modern")
-    it
-  } else if it.level == 3 {
-    set text(13pt, weight: 700, font: "New Computer Modern")
-    it
-  } else {
-    set text(weight: 700, font: "New Computer Modern")
-    it
-  }
-}
 
 
 // -----------------------------------------------------------------
@@ -225,8 +183,98 @@
 
 
   // setting for enumeration and list
-  set enum(indent: 0.45em, body-indent: 0.45em, numbering: "(i)", start: 1, spacing: 1em)
-  set list(indent: 0.45em, body-indent: 0.45em)
+  // set enum(
+  //   indent: 0.45em,
+  //   body-indent: 0.45em,
+  //   numbering: "(i)",
+  //   start: 1,
+  //   spacing: 1em,
+  // )
+  show enum: x => v(0.3em) + x
+  set enum(
+    indent: 0.05em,
+    body-indent: 0.55em, // Increased slightly to give the circle breathing room
+    start: 1,
+    spacing: 1em,
+    numbering: n => {
+      // 1. Get the roman numeral string (i, ii, iii)
+      let num = numbering("i", n)
+
+      // 2. Create the visual component
+      with_theme_config(theme => context {
+        let thm-env = current-env-name()
+        let front-color = if thm-env == none {
+          oklch(36%, 0, 0deg, 70%)
+        } else if thm-env == "example" {
+          theme.at("example_env_color_dict").at("header")
+        } else {
+          theme.at("thm_env_color_dict").at(thm-env).at("front")
+        }
+
+        let background-color = if thm-env == none {
+          oklch(86.81%, 0, 26.57deg, 66.5%)
+        } else if thm-env == "example" {
+          theme.at("example_env_color_dict").at("frame").lighten(50%).desaturate(20%)
+        } else {
+          theme.at("thm_env_color_dict").at(thm-env).at("secondary")
+        }
+
+
+        pad(
+          circle(
+            radius: if thm-env == none { 0.57em } else { 0.6em }, // Size of the circle
+
+            fill: background-color,
+          )[
+            // 3. Style the text inside the circle
+            #set align(center + horizon)
+            #set text(fill: front-color, size: 0.8em, weight: 600, font: "Inter 18pt")
+            #num
+          ],
+          top: -0.2em,
+        )
+
+
+        // move(
+        //   // inset: -0.05em,
+        //   // baseline: 0em, // Adjusts vertical alignment to sit nicely with text
+        //   circle(
+        //     radius: if thm-env == none { 0.57em } else { 0.6em }, // Size of the circle
+        //     fill: background-color,
+        //     stroke: none,
+        //   )[
+        //     // 3. Style the text inside the circle
+        //     #set align(center + horizon)
+        //     #set text(fill: front-color, size: 0.8em, weight: 600, font: "Inter 18pt")
+        //     #num
+        //   ],
+        //   // stroke:0.5pt+red
+
+        //   // dy: -2.2pt,
+        // )
+      })
+    },
+  )
+
+  set list(
+    indent: 0em,
+    body-indent: 0.38em,
+    marker: (
+      with_theme_config(theme => context {
+        let thm-env = current-env-name()
+        let front-color = if thm-env == none {
+          oklch(46.06%, 0.089, 94.84deg, 66.5%)
+          return box(height: 0.6em, align(horizon, text(size: 1.25em)[•]))
+        } else if thm-env == "example" {
+          theme.at("example_env_color_dict").at("header")
+        } else {
+          theme.at("thm_env_color_dict").at(thm-env).at("front").desaturate(20%)
+        }
+        box(height: 0.5em, align(horizon, text(size: 1.7em, fill: front-color)[•]))
+      }),
+      text(fallback: true, "▪"),
+    ), // workaround
+  )
 
   // guarantee that equations take the full width of the page
   show enum: it => {

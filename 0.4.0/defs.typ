@@ -21,13 +21,24 @@
 #let Sh(C, X) = $op(sans("Sh")_(#C))(#(X))$
 #let PSh(C, X) = $op(sans("PSh")_(#C))(#(X))$
 
-// Common Linear Algebra Groups
+// Groups
+#let chargrp(G) = $frak(X)(#G)$  // character group of G, which consists of all group homomorphisms from G to ℂ^×
+#let pontdual(G) = $#G^(or.curly)$ // Pontryagin dual of a locally compact abelian group, which consists of all continuous group homomorphisms from G to the circle group S^1
+#let Gal = math.op("Gal")  // Galois group
+
+// Linear Algebra Groups
 #let SL = math.op("SL")
 #let PSL = math.op("PSL")
 #let GL = math.op("GL")
 
+// Topological vector spaces
+#let topdual(X) = $#X^(')$  // topological dual of a topological 𝕜-vector space X, which consists of all continuous linear functionals from X to 𝕜
+
+// Fields
+#let kk = $bb(k)$
+
+// Other common notations
 #let Tr = math.op("Tr")
-#let Gal = math.op("Gal")
 #let Frob = math.op("Frob")
 
 #let racts = $arrow.ccw.half$  // right action symbol
@@ -48,9 +59,6 @@
 // Congruence modulo n
 #let pmod(n) = $med (mod med #n)$
 
-// Groups
-#let chargrp(G) = $frak(X)(#G)$  // character group of G, which consists of all group homomorphisms from G to ℂ^×
-#let pontdual(G) = $#G^(or.curly)$ // Pontryagin dual of a locally compact abelian group, which consists of all continuous group homomorphisms from G to the circle group S^1
 
 // No indentation paragraph
 #let noindent(body) = {

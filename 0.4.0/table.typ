@@ -1,6 +1,7 @@
 #import "theme.typ": with_theme_config
 #import "math-notes.typ": current-env-name
 
+
 #let single_line_gradient(mid_color, edge_color, ratio, ..args) = {
   let interp_pos_1 = (100% - ratio) * 50%
   let interp_pos_2 = (100% + ratio) * 50%
@@ -14,7 +15,6 @@
   )
   gradient.linear(..stops, ..args)
 }
-
 
 #let vertical_line_stroke = (
   paint: single_line_gradient(
@@ -49,8 +49,6 @@
     }
   },
 )
-
-
 
 #let simple-table(columns: 2, ..items) = align(center)[
   #show table.cell.where(y: 0): it => {

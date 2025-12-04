@@ -50,7 +50,7 @@
           #header_text
           #h(1fr)
           #page_number
-        ]
+        ],
       ),
     )
     v(-10pt, weak: true)
