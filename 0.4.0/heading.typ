@@ -5,7 +5,7 @@
     #v(0.5em)
     #h(-0.1em)
     #text(
-      weight: 700,
+      weight: 600,
       font: "STIX Two Text",
       fill: oklch(35%, 0, 0deg),
       counter(heading).display(it.numbering),
@@ -70,9 +70,10 @@
       )
       #h(-0.12em)
       #text(
-        weight: 700,
+        weight: 600,
         font: "STIX Two Text",
         fill: color.darken(13%),
+        fallback: false,
         counter(heading).display(it.numbering),
       )
       #h(0.5em)
@@ -146,7 +147,7 @@
         place(
           dx: -(width + gap),
           text(
-            weight: 700,
+            weight: 600,
             font: "STIX Two Text",
             baseline: 0.05em,
             fill: color.darken(2%).saturate(20%),
@@ -203,15 +204,23 @@
       v(2em)
     })
   } else if it.level == 2 {
-    section_style_2(it)
-    // section_style_2(it, color: oklch(62.7%, 0.053, 172.77deg))
+    section_style_2(it, color: oklch(60.82%, 0.126, 210deg))
   } else if it.level == 3 {
     block({
       set par(first-line-indent: 0em)
-      set text(13pt, weight: 700, font: "Satoshi", fill: oklch(35%, 0, 0deg))
+      set text(
+        size: 13pt,
+        weight: 700,
+        font: "Satoshi",
+        fill: oklch(35%, 0, 0deg),
+        tracking: 0.05em,
+      )
+      v(0.5em)
       counter(heading).display(it.numbering)
       h(0.8em)
+      set text(tracking: 0em)
       it.body
+      v(0.3em)
     })
   } else {
     set text(weight: 700, font: "New Computer Modern")
