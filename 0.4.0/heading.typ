@@ -77,6 +77,7 @@
         counter(heading).display(it.numbering),
       )
       #h(0.5em)
+      #show math.equation: set text(fill: color.darken(14%))
       #text(
         weight: 700,
         font: "Baskervville",
@@ -172,7 +173,7 @@
 // -----------------------------------------------------------------
 // Heading Style
 // -----------------------------------------------------------------
-#let heading_style(it, chapter_color: luma(0%)) = {
+#let heading_style(it, chapter_color: luma(0%), section_color: luma(0%), subsection_color: luma(0%)) = {
   set block(above: 1.4em, below: 1em)
 
   if it.numbering == none {
@@ -199,12 +200,13 @@
         Chapter #counter(heading).display(it.numbering)#v(1.1em, weak: true)
       ]
       text(weight: 700, 28pt, font: "Lato", ligatures: false)[
+        #show math.equation: set text(fill: chapter_color)
         #it.body
       ]
       v(2em)
     })
   } else if it.level == 2 {
-    section_style_2(it, color: oklch(60.82%, 0.126, 210deg))
+    section_style_2(it, color: section_color)
   } else if it.level == 3 {
     block({
       set par(first-line-indent: 0em)
@@ -212,9 +214,10 @@
         size: 13pt,
         weight: 700,
         font: "Satoshi",
-        fill: oklch(35%, 0, 0deg),
+        fill: subsection_color,
         tracking: 0.05em,
       )
+      show math.equation: set text(fill: subsection_color)
       v(0.5em)
       counter(heading).display(it.numbering)
       h(0.8em)

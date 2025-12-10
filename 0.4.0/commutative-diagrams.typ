@@ -6,7 +6,7 @@
 #let commutative_diagram(math_content, ..args) = align(center)[
   #v(1em, weak: true)
   #with_theme_config(theme_config => {
-    let stroke_color = theme_config.at("text")
+    let stroke_color = theme_config.at("text_color")
     diagram(label-size: 0.8em, math_content, ..args, edge-stroke: stroke_color)
     v(1em, weak: true)
   })

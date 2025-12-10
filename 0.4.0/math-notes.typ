@@ -63,13 +63,21 @@
 
 
 // Theorem environment for proof and remark
-#let proof = proof_env_generator(title: "Proof")
-#let remark = proof_env_generator(
-  title: "Remark",
-  suffix: [#text(fill: oklch(28%, 0, 0deg, 70%), baseline: -0.05em)[#box(
-      width: 0pt,
-    )#h(1fr)#sym.wj#sym.space.nobreak$square.filled#h(-0.09em)$]],
-)
+#let proof = content => with_theme_config(theme_config => {
+  let text_color = theme_config.at("thm_env_color_dict").at("proof")
+  proof_env_generator(title: "Proof", title_color: text_color)(content)
+})
+
+#let remark = content => with_theme_config(theme_config => {
+  let text_color = theme_config.at("thm_env_color_dict").at("proof")
+  proof_env_generator(
+    title: "Remark",
+    title_color: text_color,
+    suffix: [#text(fill: oklch(28%, 0, 0deg, 70%), baseline: -0.05em)[#box(
+        width: 0pt,
+      )#h(1fr)#sym.wj#sym.space.nobreak$square.filled#h(-0.09em)$]],
+  )(content)
+})
 
 
 // -----------------------------------------------------------------
@@ -109,8 +117,16 @@
 
   // set font for document text
   // #set text(font: "New Computer Modern", size: 11pt, fallback: false)
-  let text_color = theme_config.text
-  set text(font: "STIX Two Text", size: 11pt, fallback: false, fill: text_color)
+  let text_color = theme_config.text_color
+  let text_font = theme_config.text_font
+  set text(
+    font: text_font,
+    size: 11pt,
+    fill: text_color,
+    fallback: false,
+  )
+
+  // set strong text style
   set strong(delta: 200)
 
   // set font for math text
@@ -122,6 +138,7 @@
     ),
     weight: 450, // default weight is 450, just to be explicit here
     features: ("cv01",), // enable wide empty set symbol
+    fill: theme_config.math_color,
     fallback: false,
   )
   show math.equation: set block(below: 8pt, above: 9pt)
@@ -221,7 +238,11 @@
 
   // setting for heading
   set heading(numbering: "1.1")
-  show heading: heading_style.with(chapter_color: theme_config.chapter_color)
+  show heading: heading_style.with(
+    chapter_color: theme_config.chapter_color,
+    section_color: theme_config.section_color,
+    subsection_color: theme_config.subsection_color,
+  )
 
   // setting for outline
   show outline.entry: outline_style.with(color_dict: theme_config.outline_color_dict)

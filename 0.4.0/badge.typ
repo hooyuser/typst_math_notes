@@ -2,7 +2,7 @@
 #import "math-notes.typ": current-env-name
 
 // Badge
-#let rounded_badge(left, right, color: gray) = {
+#let rounded_badge(left, right, color: gray, background: gray) = {
   (
     box(
       stroke: color,
@@ -43,7 +43,7 @@
   curve.close(),
 )
 
-#let rounded_badge_slanted(left, right, color: gray) = context {
+#let rounded_badge_slanted(left, right, color: gray, background_color: white) = context {
   let triangle-width = 0.2em
   let mid-pad = 0.3636em
   let left-text = text(
@@ -80,8 +80,10 @@
         radius: (right: 50pt), // Pill/capsule shape
         inset: (right: 5pt, y: 4pt), // Generous horizontal, moderate vertical padding
         baseline: 25%, // Center with surrounding text
-        right-text,
-      ),
+      )[
+        #show math.equation: set text(fill: background_color)
+        #right-text
+      ],
     ),
   )
 }
@@ -122,5 +124,10 @@
   } else {
     theme.at("thm_env_color_dict").at(thm-env).at("front").desaturate(20%)
   }
-  type_badge_internal(rounded_badge_slanted.with(color: front-color.lighten(20%).saturate(10%)), ..args)
+  let background-color = if thm-env == "example" {
+    theme.at("example_env_color_dict").at("background").darken(5%)
+  } else {
+    theme.at("thm_env_color_dict").at(thm-env).at("background")
+  }
+  type_badge_internal(rounded_badge_slanted.with(color: front-color.lighten(20%).saturate(10%), background_color: background-color), ..args)
 })

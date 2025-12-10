@@ -90,11 +90,14 @@
     #let theorem_prefix = thm_env_head_sans(env_name)
     #let theorem_number = thm_env_head_sans(context (counter.display)())
     #let theorem_title = thm_env_name_sans(title, size: 11pt)
-    #text(
-      fill: header_color,
-      size: 11.5pt,
-      theorem_prefix + h(0.15em) + theorem_number + h(0.3em) + theorem_title + h(1fr),
-    )
+    #{
+      show math.equation: set text(fill: header_color)
+      text(
+        fill: header_color,
+        size: 11.5pt,
+        theorem_prefix + h(0.15em) + theorem_number + h(0.3em) + theorem_title + h(1fr),
+      )
+    }
 
     #v(0.1em)
     #content
@@ -193,6 +196,7 @@
 
 #let proof_env_generator(
   title: "Proof",
+  title_color: oklch(28%, 0, 0deg, 80%),
   suffix: [#box(width: 0pt)#h(1fr)#sym.wj#sym.space.nobreak$square#h(-0.09em)$],
   block_func: proof_block(),
 ) = content => proof_env(
@@ -201,10 +205,10 @@
     style: "normal",
     size: 10pt,
     weight: 600,
-    fill: oklch(28%, 0, 0deg, 80%),
+    fill: title_color,
     tracking: 0.02em,
     font: "Inter 18pt",
-    [#h(-0.77em)#text(size: 7pt, baseline: -1.05pt, fill: oklch(28%, 0, 0deg, 70%), "▶︎")#h(0.15em)#title.#h(0.05em)],
+    [#h(-0.77em)#text(size: 7pt, baseline: -1.05pt, fill: title_color, "▶︎")#h(0.15em)#title.#h(0.05em)],
   ),
   suffix: suffix,
   block_func: block_func,
