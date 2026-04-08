@@ -53,7 +53,7 @@
 
 // Plain block with no special styling
 #let proof_block(
-  inset: (x: 1em, top: 0em, bottom: 1em),
+  inset: (x: 1em),
 ) = block.with(
   inset: inset,
   width: 100%,

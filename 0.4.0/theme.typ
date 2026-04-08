@@ -9,7 +9,7 @@
     math_color: oklch(18%, 0, 0deg),
     background: oklch(98%, 0, 95deg),
     chapter_color: oklch(45%, 0, 0deg),
-    section_color: oklch(60.82%, 0.126, 210deg),
+    section_color: oklch(66.84%, 0.109, 222.76deg),//oklch(60.82%, 0.126, 210deg),
     subsection_color: oklch(35%, 0, 0deg),
     ref_color: rgb("#395094"),
     thm_env_color_dict: (
@@ -77,7 +77,7 @@
         background: oklch(33.89%, 0.012, 78.16deg),
       ),
       corollary: (
-        front: oklch(57.53%, 0.174, 322.39deg),
+        front: oklch(73.86%, 0.181, 322.3deg),
         secondary: oklch(42.86%, 0.063, 322.15deg, 80%),
         background: oklch(32.64%, 0.031, 326.26deg),
       ),
@@ -102,6 +102,10 @@
 )
 
 #let theme_state = state("math-notes-theme", none)
+
+#let get_current_theme_name() = {
+  state("math-notes-theme").get()
+}
 
 #let with_theme_config(fn) = context {
   let theme = state("math-notes-theme").get()

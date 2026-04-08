@@ -1,4 +1,4 @@
-#import "theme.typ": with_theme_config
+#import "theme.typ": get_current_theme_name, with_theme_config
 #import "math-notes.typ": current-env-name
 
 // Badge
@@ -43,7 +43,7 @@
   curve.close(),
 )
 
-#let rounded_badge_slanted(left, right, color: gray, background_color: white) = context {
+#let rounded_badge_slanted(left, right, color: gray, background_color: white, right_text_color: white) = context {
   let triangle-width = 0.2em
   let mid-pad = 0.3636em
   let left-text = text(
@@ -71,8 +71,10 @@
         radius: (left: 50pt), // Pill/capsule shape
         inset: (left: 5pt, y: 4pt), // Generous horizontal, moderate vertical padding
         baseline: 25%, // Center with surrounding text
-        left-text,
-      ),
+      )[
+        #show math.equation: set text(fill: color.darken(15%))
+        #left-text
+      ],
       badge-triangle(total-height, color, x_end: triangle-width),
       box(
         stroke: color,
@@ -81,7 +83,7 @@
         inset: (right: 5pt, y: 4pt), // Generous horizontal, moderate vertical padding
         baseline: 25%, // Center with surrounding text
       )[
-        #show math.equation: set text(fill: background_color)
+        #show math.equation: set text(fill: right_text_color)
         #right-text
       ],
     ),
@@ -129,5 +131,17 @@
   } else {
     theme.at("thm_env_color_dict").at(thm-env).at("background")
   }
-  type_badge_internal(rounded_badge_slanted.with(color: front-color.lighten(20%).saturate(10%), background_color: background-color), ..args)
+  let right_text_color = if get_current_theme_name() == "dark" {
+    background-color
+  } else {
+    white
+  }
+  type_badge_internal(
+    rounded_badge_slanted.with(
+      color: front-color.lighten(20%).saturate(10%),
+      background_color: background-color,
+      right_text_color: right_text_color,
+    ),
+    ..args,
+  )
 })

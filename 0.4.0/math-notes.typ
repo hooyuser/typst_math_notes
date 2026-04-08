@@ -141,7 +141,7 @@
     fill: theme_config.math_color,
     fallback: false,
   )
-  show math.equation: set block(below: 8pt, above: 9pt)
+  show math.equation: set block(below: 8pt, above: 9pt, breakable: true)
   //#show raw: set text(font: "New Computer Modern Mono")
 
 

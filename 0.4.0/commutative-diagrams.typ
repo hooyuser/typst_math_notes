@@ -4,11 +4,11 @@
 
 // define commutative diagram
 #let commutative_diagram(math_content, ..args) = align(center)[
-  #v(1em, weak: true)
+  #v(0.5em)
   #with_theme_config(theme_config => {
     let stroke_color = theme_config.at("text_color")
     diagram(label-size: 0.8em, math_content, ..args, edge-stroke: stroke_color)
-    v(1em, weak: true)
+    v(0.5em)
   })
 ]
 
@@ -37,6 +37,9 @@
   Fg_e: $$,
   FX_e: $$,
   FY_e: $$,
+  XY_base: $$,
+  X_base_label: $$,
+  Y_base_label: $$,
   g_arrow: "->",
   Fg_arrow: "->",
   contravariant: false,
@@ -45,9 +48,6 @@
   width_e: 2.8,
   node_y: (0.5, 1.9),
 ) = {
-  // let width = 1.7
-  // let width_in = 2.3
-  // let width_e = 2.8
   let (y1, y2) = node_y
 
   let (p_C, p_D) = ((0, 0), (width, 0))
@@ -60,6 +60,14 @@
   node(p_FX, FX)
   node(p_Y, Y)
   node(p_FY, FY)
+
+  if (XY_base != $$) {
+    let p_XY_base = (-width / 2, (y1 + y2) / 2)
+    node(p_XY_base, XY_base)
+    edge(p_XY_base, p_X, X_base_label, "->", left)
+    edge(p_XY_base, p_Y, Y_base_label, "->", right)
+  }
+
   edge(p_X, p_Y, g, g_arrow, right)
   let arrow_FX_FY = if contravariant {
     reverse_arrow(Fg_arrow)
@@ -108,6 +116,9 @@
   Fg_e: $$,
   FX_e: $$,
   FY_e: $$,
+  XY_base: $$,
+  X_base_label: $$,
+  Y_base_label: $$,
   contravariant: false,
   g_arrow: "->",
   Fg_arrow: "->",
@@ -126,6 +137,9 @@
     Fg_e: Fg_e,
     FX_e: FX_e,
     FY_e: FY_e,
+    XY_base: XY_base,
+    X_base_label: X_base_label,
+    Y_base_label: Y_base_label,
     contravariant: contravariant,
     g_arrow: g_arrow,
     Fg_arrow: Fg_arrow,

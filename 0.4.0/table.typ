@@ -53,6 +53,7 @@
 #let simple-table(columns: 2, ..items) = align(center)[
   #show table.cell.where(y: 0): it => {
     set text(white)
+    show math.equation: set text(white)
     strong(it)
   }
   #v(0.5em, weak: false)

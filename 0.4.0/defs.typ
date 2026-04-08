@@ -20,6 +20,8 @@
 #let TopRing = math.op($sans("TopRing")$)
 #let Sh(C, X) = $op(sans("Sh")_(#C))(#(X))$
 #let PSh(C, X) = $op(sans("PSh")_(#C))(#(X))$
+#let Sch = math.op($sans("Sch")$)  // schemes
+
 
 // Groups
 #let chargrp(G) = $frak(X)(#G)$  // character group of G, which consists of all group homomorphisms from G to ℂ^×
@@ -38,10 +40,20 @@
 #let kk = $bb(k)$
 
 // Other common notations
+#let Hom = math.op("Hom")
 #let Tr = math.op("Tr")
 #let Frob = math.op("Frob")
+#let char = math.op("char")  // characteristic of a ring
+#let Frac = math.op("Frac")
+#let supp = math.op("supp")  // support
+#let spec(x) = $op("Spec")(#x)$  // spectrum of a ring
+#let sheafify(x) = $cal(#x)^(#h(0.2em)op("sh"))$  // sheafification of a presheaf
+#let res(V, U) = $op("res")_(#V supset.eq #U)$  // restriction map from open set V to open set U
+#let affine = $bold(upright(A))$  // affine space
 
 #let racts = $arrow.ccw.half$  // right action symbol
+
+#let evaluated(x) = $lr(zwj#x|)$
 
 // Custom matrix with [| ... |] delimiters
 #let mmat(..array) = (
@@ -66,4 +78,4 @@
   body
 }
 
-// #let xrightarrow = $stretch(->, size: #150%)$
+#let xrightarrow = $stretch(->, size: #150%)$
