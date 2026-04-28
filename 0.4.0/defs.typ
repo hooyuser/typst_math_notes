@@ -10,6 +10,7 @@
 #let TopGrp = math.op($sans("TopGrp")$)
 #let LCHGrp = math.op($sans("LCHGrp")$)
 #let LCA = math.op($sans("LCA")$)  // locally compact Hausdorff abelian groups
+#let CLieGrp = math.op($sans("CLieGrp")$)
 #let Vect(k) = math.op($#k#h(0.1em)sans("-Vect")$)
 #let FinVect(k) = math.op($#k#h(0.1em)sans("-FinVect")$)
 #let Mod(k) = math.op($#k#h(0.1em)sans("-Mod")$)
@@ -20,6 +21,7 @@
 #let TopRing = math.op($sans("TopRing")$)
 #let Sh(C, X) = $op(sans("Sh")_(#C))(#(X))$
 #let PSh(C, X) = $op(sans("PSh")_(#C))(#(X))$
+#let lcSh(C, X) = $op(sans("Sh")_(#C)^(op("lc")))(#X)$  // locally constant sheaves
 #let Sch = math.op($sans("Sch")$)  // schemes
 
 
@@ -51,6 +53,7 @@
 #let res(V, U) = $op("res")_(#V supset.eq #U)$  // restriction map from open set V to open set U
 #let affine = $bold(upright(A))$  // affine space
 
+#let acts = $arrow.cw.half$  // left action symbol
 #let racts = $arrow.ccw.half$  // right action symbol
 
 #let evaluated(x) = $lr(zwj#x|)$

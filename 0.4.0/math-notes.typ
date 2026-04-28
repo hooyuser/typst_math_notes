@@ -251,10 +251,18 @@
   show: theorem_env_initiate
 
   // setting reference style
-  show ref: set text(theme_config.ref_color)
+  show ref: it => {
+    set text(theme_config.ref_color)
+    show math.equation: set text(theme_config.ref_color)
+    it
+  }
 
   // setting link style
-  show link: set text(theme_config.ref_color)
+  show link: it => {
+    set text(theme_config.ref_color)
+    show math.equation: set text(theme_config.ref_color)
+    it
+  }
 
   // setting for math style
   set math.mat(delim: "[")
