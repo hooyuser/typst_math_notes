@@ -193,6 +193,7 @@
       #it.body #v(1em, weak: true)
     ]
   } else if it.level == 1 {
+    pagebreak(weak: true)
     block({
       set par(first-line-indent: 0em)
       text(weight: 700, 22pt, tracking: 0.5pt, font: "Lato", fill: chapter_color)[

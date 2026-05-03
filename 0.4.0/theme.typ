@@ -9,7 +9,7 @@
     math_color: oklch(18%, 0, 0deg),
     background: oklch(98%, 0, 95deg),
     chapter_color: oklch(45%, 0, 0deg),
-    section_color: oklch(66.84%, 0.109, 222.76deg),//oklch(60.82%, 0.126, 210deg),
+    section_color: oklch(63%, 11%, 275deg), // oklch(66.84%, 0.109, 222.76deg),//oklch(60.82%, 0.126, 210deg),
     subsection_color: oklch(35%, 0, 0deg),
     ref_color: rgb("#395094"),
     thm_env_color_dict: (

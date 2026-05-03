@@ -14,6 +14,8 @@
 #let Vect(k) = math.op($#k#h(0.1em)sans("-Vect")$)
 #let FinVect(k) = math.op($#k#h(0.1em)sans("-FinVect")$)
 #let Mod(k) = math.op($#k#h(0.1em)sans("-Mod")$)
+#let Alg(k) = math.op($#k#h(0.1em)sans("-Alg")$)
+#let CAlg(k) = math.op($#k#h(0.1em)sans("-CAlg")$)
 #let CHilb = math.op($CC#h(0.07em)sans("-Hilb")$)  // Common Definitions of Morphisms in Hilb: Bounded Linear Maps / All Linear Maps / Short Linear Maps / Isometric Isomorphisms, Here We Use Bounded Linear Maps
 #let Fld = math.op($sans("Fld")$)
 #let Ring = math.op($sans("Ring")$)
@@ -81,4 +83,14 @@
   body
 }
 
+#let xleftarrow = $stretch(<-, size: #150%)$
 #let xrightarrow = $stretch(->, size: #150%)$
+
+#let (varinjlim, varprojlim) = {
+  let factory = arrowsym => context {
+    let size = measure[lim].width
+    let arrow = pad(top: -1em, math.stretch(math.script(arrowsym), size: size))
+    math.attach(math.limits[lim], b: arrow)
+  }
+  (sym.arrow.r, sym.arrow.l).map(factory).map(math.op.with(limits: true))
+}
