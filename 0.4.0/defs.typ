@@ -25,6 +25,7 @@
 #let PSh(C, X) = $op(sans("PSh")_(#C))(#(X))$
 #let lcSh(C, X) = $op(sans("Sh")_(#C)^(op("lc")))(#X)$  // locally constant sheaves
 #let Sch = math.op($sans("Sch")$)  // schemes
+#let CMan = math.op($sans("CMan")$)  // complex manifolds
 
 
 // Groups
@@ -85,6 +86,7 @@
 
 #let xleftarrow = $stretch(<-, size: #150%)$
 #let xrightarrow = $stretch(->, size: #150%)$
+#let mapsfrom = $arrow.l.bar.long$
 
 #let (varinjlim, varprojlim) = {
   let factory = arrowsym => context {
