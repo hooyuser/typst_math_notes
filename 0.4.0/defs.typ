@@ -131,3 +131,100 @@
   }
   (sym.arrow.r, sym.arrow.l).map(factory).map(math.op.with(limits: true))
 }
+
+
+// ---------------------------------------------
+// Extensible arrows
+// ---------------------------------------------
+
+#let _xarrow(
+  arrow,
+  above,
+  below: none,
+  pad: 0.5em,
+) = {
+  let padded(label) = if label == none {
+    none
+  } else {
+    h(pad) + label + h(pad)
+  }
+
+  math.class(
+    "relation",
+    math.attach(
+      math.limits(
+        math.stretch(arrow),
+      ),
+      t: padded(above),
+      b: padded(below),
+    ),
+  )
+}
+
+// Single arrows
+#let xlongrightarrow(
+  above,
+  below: none,
+  pad: 0.5em,
+) = _xarrow(
+  sym.arrow.r,
+  above,
+  below: below,
+  pad: pad,
+)
+
+#let xlongleftarrow(
+  above,
+  below: none,
+  pad: 0.5em,
+) = _xarrow(
+  sym.arrow.l,
+  above,
+  below: below,
+  pad: pad,
+)
+
+#let xlongleftrightarrow(
+  above,
+  below: none,
+  pad: 0.5em,
+) = _xarrow(
+  sym.arrow.l.r,
+  above,
+  below: below,
+  pad: pad,
+)
+
+// Double arrows
+#let xLongrightarrow(
+  above,
+  below: none,
+  pad: 0.5em,
+) = _xarrow(
+  sym.arrow.r.double,
+  above,
+  below: below,
+  pad: pad,
+)
+
+#let xLongleftarrow(
+  above,
+  below: none,
+  pad: 0.5em,
+) = _xarrow(
+  sym.arrow.l.double,
+  above,
+  below: below,
+  pad: pad,
+)
+
+#let xLongleftrightarrow(
+  above,
+  below: none,
+  pad: 0.5em,
+) = _xarrow(
+  sym.arrow.l.r.double,
+  above,
+  below: below,
+  pad: pad,
+)
