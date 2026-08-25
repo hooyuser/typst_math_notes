@@ -1,9 +1,14 @@
 // Shorthand notations for common categories
 #import "utils.typ": injlim, projlim
 
+#let Cat = math.op($sans("Cat")$)
+#let CAT = math.op($sans("CAT")$)
+#let Cocone = math.op($sans("Cocone")$)
+
 #let Set = math.op($sans("Set")$)
 #let Top = math.op($sans("Top")$)
 #let Grp = math.op($sans("Grp")$)
+#let Grpd = math.op($sans("Grpd")$)
 #let FinGrp = math.op($sans("FinGrp")$)
 #let Ab = math.op($sans("Ab")$)
 #let FinAb = math.op($sans("FinAb")$)
@@ -22,10 +27,39 @@
 #let CRing = math.op($sans("CRing")$)
 #let TopRing = math.op($sans("TopRing")$)
 #let Sh(C, X) = $op(sans("Sh")_(#C))(#(X))$
-#let PSh(C, X) = $op(sans("PSh")_(#C))(#(X))$
+#let PSh(C, X) = $op(sans("Psh")_(#C))(#(X))$
 #let lcSh(C, X) = $op(sans("Sh")_(#C)^(op("lc")))(#X)$  // locally constant sheaves
 #let Sch = math.op($sans("Sch")$)  // schemes
+#let TopMan = math.op($sans("TopMan")$)  // topological manifolds
+#let Man = math.op($sans("Man")^(C^oo)$)  // smooth manifolds
+#let Man(..args) = {
+  let xs = args.pos()
+  if xs.len() == 0 {
+    math.op($sans("Man")^(C^oo)$) // smooth manifolds
+  } else if xs.len() == 1 {
+    let r = xs.at(0)
+    math.op($sans("Man")^(C^(#r))$) // C^r differentiable manifolds
+  } else {
+    panic("Man expects at most one argument")
+  }
+}
+
 #let CMan = math.op($sans("CMan")$)  // complex manifolds
+#let SmVBun(K, ..args) = {
+  let xs = args.pos()
+
+  if xs.len() == 0 {
+    math.op($sans("VBun")^(C^oo)_(#K)$) // smooth vector bundles
+  } else if xs.len() == 1 {
+    let X = xs.at(0)
+    math.op($sans("VBun")^(C^oo)_(#K) (#X)$) // smooth vector bundles over a fixed base manifold X
+  } else {
+    panic("SmVBun expects at most one argument after K")
+  }
+}
+
+#let LocFree(O) = math.op($sans("LocFree")_(#O)^(op("fin"))$)  // locally free sheaves of O-modules
+
 
 
 // Groups
@@ -45,6 +79,7 @@
 #let kk = $bb(k)$
 
 // Other common notations
+#let Ob = math.op("Ob")
 #let Hom = math.op("Hom")
 #let Tr = math.op("Tr")
 #let Frob = math.op("Frob")
@@ -69,10 +104,10 @@
 )
 
 // Set font for mathscr
-#let scr(it) = text(
-  font: "New Computer Modern Math",
-  $std.math.scr(it)$,
-)
+// #let scr(it) = text(
+//   font: "New Computer Modern Math",
+//   $std.math.scr(it)$,
+// )
 
 // Congruence modulo n
 #let pmod(n) = $med (mod med #n)$
