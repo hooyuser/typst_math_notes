@@ -4,6 +4,7 @@
 #let Cat = math.op($sans("Cat")$)
 #let CAT = math.op($sans("CAT")$)
 #let Cocone = math.op($sans("Cocone")$)
+#let Disc = math.op($sans("Disc")$)
 
 #let Set = math.op($sans("Set")$)
 #let Top = math.op($sans("Top")$)
@@ -80,12 +81,14 @@
 
 // Other common notations
 #let Ob = math.op("Ob")
+#let Mor = math.op("Mor")
 #let Hom = math.op("Hom")
 #let Tr = math.op("Tr")
 #let Frob = math.op("Frob")
 #let char = math.op("char")  // characteristic of a ring
 #let Frac = math.op("Frac")
 #let supp = math.op("supp")  // support
+#let pr = math.op("pr")  // projection map
 #let spec(x) = $op("Spec")(#x)$  // spectrum of a ring
 #let sheafify(x) = $cal(#x)^(#h(0.2em)op("sh"))$  // sheafification of a presheaf
 #let res(V, U) = $op("res")_(#V supset.eq #U)$  // restriction map from open set V to open set U
@@ -227,4 +230,19 @@
   above,
   below: below,
   pad: pad,
+)
+
+#let rightsquigarrow = math.class(
+  "relation",
+  text(font: "KaTeX_AMS")[⇝],
+)
+
+#let longrightsquigarrow = math.class(
+  "relation",
+  scale(
+    x: 146.3%,
+    y: 100%,
+    reflow: true,
+    text(font: "KaTeX_AMS")[⇝],
+  ),
 )

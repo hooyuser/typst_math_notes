@@ -1,5 +1,7 @@
 #import "@preview/rich-counters:0.2.2": rich-counter
 
+
+
 #set heading(numbering: "1.1")
 // #set page(margin: (top: 5em, bottom: 5em))
 #set par(justify: true)
@@ -110,10 +112,15 @@
     let children = content.children
     let idx = children.len() - 1
     while idx >= 0 and children.at(idx) in space {
-      idx = idx - 1 // skip all the spaces at the end
+      idx = idx - 1
     }
-    children.slice(0, idx).join() // preserve the elements except the last element
-    let last_ele = children.at(idx) // get the last element that is not a space
+    // Guard: if every child was a space (or children was empty),
+    // there's nothing meaningful to attach the suffix to.
+    if idx < 0 {
+      return content + suffix
+    }
+    children.slice(0, idx).join()
+    let last_ele = children.at(idx)
     if last_ele.has("children") {
       add-suffix(last_ele, suffix)
     } else if last_ele.has("child") {
@@ -131,6 +138,34 @@
     content + suffix
   }
 }
+
+// #let add-suffix(content, suffix) = {
+//   let space = ([ ], parbreak())
+//   if content.has("children") {
+//     let children = content.children
+//     let idx = children.len() - 1
+//     while idx >= 0 and children.at(idx) in space {
+//       idx = idx - 1 // skip all the spaces at the end
+//     }
+//     children.slice(0, idx).join() // preserve the elements except the last element
+//     let last_ele = children.at(idx) // get the last element that is not a space
+//     if last_ele.has("children") {
+//       add-suffix(last_ele, suffix)
+//     } else if last_ele.has("child") {
+//       add-suffix(last_ele.child, suffix)
+//     } else {
+//       if last_ele.func() in (std.list.item, std.enum.item) {
+//         let element_func = last_ele.func()
+//         let element_body = last_ele.body
+//         element_func[#element_body#suffix]
+//       } else {
+//         last_ele + suffix
+//       }
+//     }
+//   } else {
+//     content + suffix
+//   }
+// }
 
 // how to combine prefix, content, and suffix
 #let proof-transform(prefix, content, suffix) = {
@@ -207,8 +242,9 @@
     weight: 600,
     fill: title_color,
     tracking: 0.02em,
-    font: "Inter 18pt",
-    [#h(-0.77em)#text(size: 7pt, baseline: -1.05pt, fill: title_color, "▶︎")#h(0.15em)#title.#h(0.05em)],
+    font: "Inter",
+    variations: (opsz: 18),
+    [#h(-0.81em)#text(size: 7pt, baseline: -1.05pt, fill: title_color, "▶︎")#h(0.19em)#title.#h(0.05em)],
   ),
   suffix: suffix,
   block_func: block_func,
@@ -248,7 +284,6 @@
   show figure.where(kind: "thm-env-uncounted"): set block(breakable: true)
   show figure.where(kind: "thm-env-uncounted"): set align(start)
   show figure.where(kind: "thm-env-uncounted"): fig => fig.body
-
 
   // Define custom reference function
   show ref: it => {

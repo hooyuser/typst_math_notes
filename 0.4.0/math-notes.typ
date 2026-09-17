@@ -70,12 +70,13 @@
 
 #let remark = content => with_theme_config(theme_config => {
   let text_color = theme_config.at("thm_env_color_dict").at("proof")
+  let square_filled = text(size: 0.9em, fill: oklch(28%, 0, 0deg, 70%), sym.square.filled)
   proof_env_generator(
     title: "Remark",
     title_color: text_color,
-    suffix: [#text(fill: oklch(28%, 0, 0deg, 70%), baseline: -0.05em)[#box(
+    suffix: [#text(baseline: 0.0em)[#box(
         width: 0pt,
-      )#h(1fr)#sym.wj#sym.space.nobreak$square.filled#h(-0.09em)$]],
+      )#h(1fr)#sym.wj#sym.space.nobreak$#square_filled#h(-0.09em)$]],
   )(content)
 })
 
@@ -132,18 +133,17 @@
   // set font for math text
   // #show math.equation: set text(font: "STIX Two Math", weight: 400)
   show math.equation: set text(
-    font: (
-      (name: "Computer Modern Symbol", covers: regex("[𝒜ℬ𝒞𝒟ℰℱ𝒢ℋℐ𝒥𝒦ℒℳ𝒩-𝒬ℛ𝒮-𝒵]")),
-      "New Computer Modern Math",
-    ),
+    // font: (
+    //   (name: "Computer Modern Symbol", covers: regex("[𝒜ℬ𝒞𝒟ℰℱ𝒢ℋℐ𝒥𝒦ℒℳ𝒩-𝒬ℛ𝒮-𝒵]")),
+    //   "New Computer Modern Math",
+    // ),
     weight: 450, // default weight is 450, just to be explicit here
-    features: ("cv01",), // enable wide empty set symbol
+    // features: ("cv01",), // enable wide empty set symbol
     fill: theme_config.math_color,
     fallback: false,
   )
   show math.equation: set block(below: 8pt, above: 9pt, breakable: true)
   //#show raw: set text(font: "New Computer Modern Mono")
-
 
   // setting for enumeration
   // set enum(
@@ -190,7 +190,7 @@
           )[
             // 3. Style the text inside the circle
             #set align(center + horizon)
-            #set text(fill: front-color, size: 0.8em, weight: 600, font: "Inter 18pt")
+            #set text(fill: front-color, size: 0.8em, weight: 600, font: "Inter", variations: (opsz: 18))
             #num
           ],
           top: -0.2em,
@@ -198,7 +198,6 @@
       })
     },
   )
-
 
   // setting for bullet list
   set list(
@@ -208,14 +207,16 @@
       with_theme_config(theme => context {
         let thm-env = current-env-name()
         let front-color = if thm-env == none {
-          oklch(46.06%, 0.089, 94.84deg, 66.5%)
-          return box(height: 0.6em, align(horizon, text(size: 1.25em)[•]))
+          // oklch(46.06%, 0.089, 94.84deg, 66.5%)
+          return text(size: 1.25em, baseline: 0.04em)[•]
+          // return box(height: 0.6em, align(horizon, text(size: 1.25em)[•]))
         } else if thm-env == "example" {
           theme.at("example_env_color_dict").at("header")
         } else {
           theme.at("thm_env_color_dict").at(thm-env).at("front").desaturate(20%)
         }
-        box(height: 0.5em, align(horizon, text(size: 1.7em, fill: front-color)[•]))
+        text(size: 1.7em, baseline: 0.095em, fill: front-color)[•]
+        // box(height: 0.5em, align(horizon, text(size: 1.7em, fill: front-color)[•]))
       }),
       text(fallback: true, "▪"),
     ), // workaround

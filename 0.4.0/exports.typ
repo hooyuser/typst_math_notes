@@ -4,7 +4,7 @@
 
 #import "commutative-diagrams.typ": (
   adjunction_pair, cetz_canvas, commutative_diagram, functor_diagram, functor_diagram_square_cd, square_cd,
-  square_cd_element,
+  square_cd_element, two_cell_diagram,
 )
 
 #import "theme.typ": with_theme_config
