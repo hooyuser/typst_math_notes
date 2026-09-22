@@ -1,0 +1,73 @@
+[[fonts]]
+family_name = "Noto Sans"
+style = "Normal"
+weight = [400, 600, 700]
+
+[[fonts]]
+family_name = "Noto Sans Display"
+style = "Normal"
+weight = 500
+
+[[fonts]]
+family_name = "Noto Serif"
+style = "Normal"
+weight = 500
+
+[[fonts]]
+family_name = "Lato"
+style = "Normal"
+weight = 700
+
+[[fonts]]
+family_name = "New Computer Modern"
+style = "Normal"
+weight = 700
+
+[[fonts]]
+family_name = "Latin Modern Sans"
+style = "Normal"
+weight = 700
+
+[[fonts]]
+family_name = "STIX Two Text"
+style = "Normal"
+weight = [400, 600, 700]
+
+[[fonts]]
+family_name = "STIX Two Text"
+style = "Italic"
+weight = 400
+
+[[fonts]]
+family_name = "Icon Design"
+
+[[fonts]]
+family_name = "Inter"
+weight = 600
+
+[[fonts]]
+family_name = "Satoshi"
+weight = 700
+
+[[fonts]]
+family_name = "Baskervville"
+weight = 700
+
+[[fonts]]
+family_name = "Fira Sans"
+weight = [400, 600]
+
+# math fonts
+[[fonts]]
+family_name = "New Computer Modern Math"
+style = "Normal"
+weight = 450
+
+[[fonts]]
+family_name = "Computer Modern Symbol"
+weight = 500
+
+[[fonts]]
+family_name = "KaTeX_AMS"
+style = "Normal"
+weight = 400
