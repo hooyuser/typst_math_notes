@@ -223,19 +223,19 @@
   )
 
   // guarantee that equations take the full width of the page
-  show enum: it => {
-    show math.equation.where(block: true): eq => {
-      block(width: 100%, inset: 0pt, align(center, eq))
-    }
-    it
-  }
+  // show enum: it => {
+  //   show math.equation.where(block: true): eq => {
+  //     block(width: 100%, inset: 0pt, align(center, eq))
+  //   }
+  //   it
+  // }
 
-  show list: it => {
-    show math.equation.where(block: true): eq => {
-      block(width: 100%, inset: 0pt, align(center, eq))
-    }
-    it
-  }
+  // show list: it => {
+  //   show math.equation.where(block: true): eq => {
+  //     block(width: 100%, inset: 0pt, align(center, eq))
+  //   }
+  //   it
+  // }
 
   // setting for heading
   set heading(numbering: "1.1")
